@@ -1,0 +1,79 @@
+/* ---- GLOBAL ---- */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: linear-gradient(180deg, #ffe4ef, #ffd1e3);
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* ---- FALLING EMOJIS ---- */
+.emoji {
+  position: absolute;
+  top: -50px;
+  animation: fall linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+  }
+}
+
+/* ---- DASHBOARD ---- */
+.dashboard {
+  position: relative;
+  z-index: 10;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 24px;
+  padding: 32px 40px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(255, 105, 180, 0.25);
+  backdrop-filter: blur(10px);
+  min-width: 320px;
+}
+
+h1 {
+  margin: 0;
+  color: #ff5c8a;
+  font-size: 28px;
+}
+
+.timer {
+  margin-top: 12px;
+  font-size: 18px;
+  color: #555;
+}
+
+/* ---- SEASON BUTTON ---- */
+.season-btn {
+  margin-top: 24px;
+  display: inline-block;
+  padding: 12px 20px;
+  border-radius: 16px;
+  text-decoration: none;
+  font-weight: 600;
+  color: white;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.season-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.christmas {
+  background: linear-gradient(135deg, #ff5c5c, #c92a2a);
+}
+
+.halloween {
+  background: linear-gradient(135deg, #ff9f1c, #ff6f00);
+}
