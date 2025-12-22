@@ -1,10 +1,7 @@
-/* =========================
-   CHRISTMAS EMOJIS
-========================= */
 const emojis = ["🎄", "❄️", "🎁"];
 
 /* -------------------
-   SNOW PILE SETUP
+   Snow Pile Setup
 ------------------- */
 const snowPile = document.createElement("div");
 snowPile.id = "snowPile";
@@ -12,22 +9,26 @@ document.body.appendChild(snowPile);
 let snowHeight = 0;
 
 /* -------------------
-   FALLING EMOJIS
+   Falling Emojis with Spin
 ------------------- */
 function createEmoji() {
   const emoji = document.createElement("div");
   emoji.classList.add("emoji");
   emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-  emoji.style.left = Math.random() * 100 + "vw";
-  emoji.style.fontSize = 18 + Math.random() * 14 + "px";
-  emoji.style.animationDuration = 8 + Math.random() * 6 + "s";
 
-  document.body.appendChild(emoji);
+  emoji.style.left = Math.random() * (window.innerWidth - 30) + "px";
+  emoji.style.fontSize = 18 + Math.random() * 14 + "px";
+
+  const angle = Math.random() * 360;
+  emoji.style.transform = `rotate(${angle}deg)`;
+  const spinDuration = 15 + Math.random() * 20;
+  emoji.style.animation = `fall ${8 + Math.random() * 6}s linear, spin ${spinDuration}s linear infinite`;
 
   emoji.addEventListener("animationend", () => {
-    pileSnow();
+    if (emoji.innerText === "❄️") pileSnow();
   });
 
+  document.body.appendChild(emoji);
   setTimeout(() => emoji.remove(), 15000);
 }
 
@@ -41,7 +42,7 @@ function pileSnow() {
 }
 
 /* -------------------
-   COUNT-UP TIMER
+   Timer
 ------------------- */
 const startDate = new Date("May 24, 2025 00:00:00");
 
@@ -68,7 +69,7 @@ setInterval(updateTimer, 1000);
 updateTimer();
 
 /* -------------------
-   MUSIC BUTTON
+   Music Button
 ------------------- */
 const music = document.getElementById("music");
 const musicBtn = document.getElementById("musicBtn");
