@@ -52,11 +52,11 @@ const seasonBtn = document.getElementById("seasonButton");
 
 if (month === 11) { // December
   seasonBtn.innerText = "🎄 Christmas";
-  seasonBtn.href = "/lakida/Christmas.com/index.html";
+  seasonBtn.href = "/lakida/christmas";
   seasonBtn.classList.add("christmas");
 } else if (month >= 8 && month <= 10) { // Fall
   seasonBtn.innerText = "🎃 Halloween";
-  seasonBtn.href = "/lakida/Halloween.com/index.html";
+  seasonBtn.href = "/lakida/halloween";
   seasonBtn.classList.add("halloween");
 } else {
   seasonBtn.style.display = "none";
