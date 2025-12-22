@@ -1,35 +1,34 @@
+/* -------------------
+   FALLING EMOJIS
+------------------- */
 const mainEmojis = ["🌹", "💔"];
-const topBlock = document.querySelector(".block-top");
-
 function createMainEmoji() {
   const emoji = document.createElement("div");
   emoji.classList.add("emoji");
   emoji.innerText = mainEmojis[Math.floor(Math.random() * mainEmojis.length)];
 
-  // random position across whole screen
   emoji.style.left = Math.random() * (window.innerWidth - 30) + "px";
   emoji.style.fontSize = 18 + Math.random() * 14 + "px";
 
-  // slow random spin & random start angle
   const angle = Math.random() * 360;
+  const spinDuration = 20 + Math.random() * 15;
+  const fallDuration = 8 + Math.random() * 6;
   emoji.style.transform = `rotate(${angle}deg)`;
-  const spinDuration = 20 + Math.random() * 15; // 20–35s
-  const fallDuration = 8 + Math.random() * 6; // 8–14s
   emoji.style.animation = `fall ${fallDuration}s linear, spin ${spinDuration}s linear infinite`;
 
   document.body.appendChild(emoji);
   setTimeout(() => emoji.remove(), fallDuration * 1000);
 }
-
 setInterval(createMainEmoji, 500);
 
-/* Extra hearts in top block */
+/* Extra hearts in time block */
+const timeBlock = document.querySelector('[data-function="time"]');
 function createTopHeart() {
   const heart = document.createElement("div");
   heart.classList.add("emoji");
   heart.innerText = "💖";
 
-  const rect = topBlock.getBoundingClientRect();
+  const rect = timeBlock.getBoundingClientRect();
   heart.style.left = rect.left + Math.random() * rect.width + "px";
   heart.style.top = rect.top + Math.random() * rect.height + "px";
   heart.style.fontSize = 18 + Math.random() * 10 + "px";
@@ -42,10 +41,11 @@ function createTopHeart() {
   document.body.appendChild(heart);
   setTimeout(() => heart.remove(), 10000);
 }
-
 setInterval(createTopHeart, 800);
 
-/* Count-up timer */
+/* -------------------
+   Count-up timer
+------------------- */
 const startDate = new Date("May 24, 2025 00:00:00");
 function updateTimer() {
   const now = new Date();
@@ -62,11 +62,12 @@ function updateTimer() {
   document.getElementById("timer").innerText =
     `Together for ${days} days, ${hours}h ${minutes}m ${seconds}s 💕`;
 }
-
 setInterval(updateTimer, 1000);
 updateTimer();
 
-/* Seasonal Button */
+/* -------------------
+   Seasonal Button
+------------------- */
 const month = new Date().getMonth();
 const seasonBtn = document.getElementById("seasonButton");
 if (month === 11) {
@@ -80,3 +81,28 @@ if (month === 11) {
 } else {
   seasonBtn.style.display = "none";
 }
+
+/* -------------------
+   Example function system
+------------------- */
+document.querySelectorAll(".block").forEach(block => {
+  const func = block.dataset.function;
+  block.addEventListener("click", () => {
+    switch(func) {
+      case "time":
+        alert("This is the timer block!");
+        break;
+      case "season":
+        // season button click handled separately
+        break;
+      case "photo":
+        alert("Photo Album will come soon!");
+        break;
+      case "empty":
+        alert("Empty block clicked!");
+        break;
+      default:
+        console.log("Block clicked:", func);
+    }
+  });
+});

@@ -2,21 +2,22 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: linear-gradient(180deg, #ffe4ef, #ffd1e3);
-  overflow-x: hidden;
   min-height: 100vh;
-  padding: 20px;
-  position: relative; /* emojis absolute to body */
+  overflow: hidden;
+  position: relative;
   display: flex;
-  justify-content: center; /* center grid horizontally */
+  justify-content: center; /* horizontal centering */
+  align-items: center;     /* vertical centering */
 }
 
-/* Grid Layout */
-.dashboard-grid {
+/* Dashboard wrapper - keeps blocks centered */
+.dashboard-wrapper {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   grid-auto-rows: auto;
   gap: 20px;
-  justify-items: center; /* center blocks in each column */
+  justify-items: center;
+  align-items: center;
 }
 
 /* Blocks */
@@ -28,25 +29,23 @@ body {
   box-shadow: 0 10px 30px rgba(255,105,180,0.2);
   backdrop-filter: blur(10px);
   width: 100%;
-  max-width: 280px; /* small block width */
-  height: auto;
+  max-width: 280px;
+  cursor: pointer;
 }
 
-/* Top block */
-.block-top {
-  grid-column: 1 / -1; /* span full width */
+/* Top block (time) can be wider if needed */
+.block[data-function="time"] {
   max-width: 600px;
-  width: 100%;
 }
 
 /* Timer styling */
-.timer {
+#timer {
   margin-top: 12px;
   font-size: 18px;
   color: #555;
 }
 
-/* Season Button */
+/* Buttons */
 .season-btn {
   padding: 12px 20px;
   border-radius: 16px;
@@ -70,7 +69,7 @@ body {
   background: linear-gradient(135deg, #ff9f1c, #ff6f00);
 }
 
-/* Falling Emojis */
+/* Falling emojis */
 .emoji {
   position: absolute;
   top: -50px;
@@ -94,25 +93,15 @@ body {
 
 /* Mobile tweaks */
 @media (max-width: 600px) {
-  body {
-    padding: 10px;
+  .dashboard-wrapper {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
-
-  .block-top {
-    max-width: 100%;
-    padding: 16px;
-  }
-
   .block {
-    max-width: 100%;
+    max-width: 90%;
     padding: 16px;
   }
-
-  .timer {
+  #timer {
     font-size: 16px;
-  }
-
-  .season-btn {
-    padding: 10px 16px;
   }
 }
