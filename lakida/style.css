@@ -1,5 +1,5 @@
 /* -------------------
-   GLOBAL RESET
+   RESET
 ------------------- */
 * {
   margin: 0;
@@ -12,10 +12,10 @@
 ------------------- */
 body {
   min-height: 100vh;
-  background: linear-gradient(180deg, #ffd6e8, #ffeaf3);
-  font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #ffe6f0;
+  font-family: "Segoe UI", system-ui, sans-serif;
   overflow-x: hidden;
-  color: #5a2a3c;
+  color: #4a2a35;
 }
 
 /* -------------------
@@ -27,7 +27,6 @@ body {
   z-index: 1;
   pointer-events: none;
   user-select: none;
-  will-change: transform;
 }
 
 /* -------------------
@@ -36,46 +35,44 @@ body {
 .dashboard-wrapper {
   position: relative;
   z-index: 5;
+
   min-height: 100vh;
+  padding: 24px 16px;
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-
-  padding: 24px 16px;
+  justify-content: center;
 }
 
 /* -------------------
-   BLOCK BASE STYLE
+   BLOCK BASE (RESTORED)
 ------------------- */
 .block {
-  background: rgba(255, 220, 235, 0.28);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-
-  border-radius: 20px;
-  padding: 22px;
-
-  border: 1px solid rgba(255, 160, 210, 0.35);
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 18px;
+  padding: 20px;
 
   box-shadow:
-    0 0 12px rgba(255, 105, 180, 0.25),
-    0 0 28px rgba(255, 105, 180, 0.15);
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    0 0 14px rgba(255, 120, 180, 0.15);
+
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 
   transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 /* -------------------
-   BLOCK HOVER / TAP
+   HOVER / TAP
 ------------------- */
 .block:hover {
-  transform: translateY(-4px) scale(1.01);
+  transform: translateY(-3px);
   box-shadow:
-    0 0 20px rgba(255, 105, 180, 0.45),
-    0 0 45px rgba(255, 105, 180, 0.25);
+    0 8px 18px rgba(0, 0, 0, 0.12),
+    0 0 22px rgba(255, 120, 180, 0.25);
 }
 
 @media (hover: none) {
@@ -85,19 +82,17 @@ body {
 }
 
 /* -------------------
-   TEXT STYLING
+   TEXT
 ------------------- */
 .block h2 {
-  font-size: 1.2rem;
-  margin-bottom: 8px;
+  font-size: 1.15rem;
+  margin-bottom: 6px;
   text-align: center;
-  text-shadow: 0 0 6px rgba(255, 120, 190, 0.35);
 }
 
 .block p {
+  font-size: 0.95rem;
   text-align: center;
-  font-size: 1rem;
-  text-shadow: 0 0 6px rgba(255, 120, 190, 0.35);
 }
 
 /* -------------------
@@ -105,31 +100,25 @@ body {
 ------------------- */
 .block-top {
   width: 100%;
-  max-width: 780px;
-  margin-bottom: 26px;
-
-  box-shadow:
-    0 0 18px rgba(255, 105, 180, 0.4),
-    0 0 55px rgba(255, 105, 180, 0.25);
+  max-width: 720px;
+  margin-bottom: 22px;
 }
 
 /* -------------------
-   COLUMNS
+   GRID FOR LOWER BLOCKS
 ------------------- */
 .columns {
   width: 100%;
-  max-width: 780px;
+  max-width: 720px;
 
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 22px;
+  gap: 18px;
 }
 
-/* -------------------
-   INDIVIDUAL BLOCK SIZE
-------------------- */
+/* Keep cards normal-sized */
 .columns .block {
-  min-height: 120px;
+  min-height: 110px;
 }
 
 /* -------------------
@@ -138,35 +127,30 @@ body {
 .season-btn {
   display: inline-block;
   margin-top: 10px;
-  padding: 10px 16px;
+  padding: 8px 14px;
 
   border-radius: 999px;
-  background: rgba(255, 120, 180, 0.25);
-  color: #7a1f44;
+  background: #ffd1e4;
+  color: #5c1f3a;
   font-weight: 600;
   text-decoration: none;
 
-  box-shadow:
-    0 0 10px rgba(255, 105, 180, 0.35);
-
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 8px rgba(255, 120, 180, 0.3);
 }
 
 .season-btn:hover {
-  transform: scale(1.06);
-  box-shadow:
-    0 0 18px rgba(255, 105, 180, 0.55);
+  transform: scale(1.05);
 }
 
 /* -------------------
-   MOBILE LAYOUT
+   MOBILE
 ------------------- */
 @media (max-width: 640px) {
-  .block-top {
-    max-width: 100%;
-  }
-
   .columns {
     grid-template-columns: 1fr;
+  }
+
+  .block-top {
+    max-width: 100%;
   }
 }
