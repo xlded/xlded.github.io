@@ -1,48 +1,20 @@
-/* =========================
-   CONFIG
-========================= */
-const START_DATE = new Date("May 24, 2025 00:00:00");
-
-/* =========================
-   COUNT-UP TIMER
-========================= */
-function updateTimer() {
-  const now = new Date();
-  let diff = now - START_DATE;
-
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  diff %= (1000 * 60 * 60 * 24);
-  const hours = Math.floor(diff / (1000 * 60 * 60));
-  diff %= (1000 * 60 * 60);
-  const minutes = Math.floor(diff / (1000 * 60));
-  diff %= (1000 * 60);
-  const seconds = Math.floor(diff / 1000);
-
-  const timer = document.getElementById("timer");
-  if (timer) {
-    timer.innerText = `Together for ${days} days, ${hours}h ${minutes}m ${seconds}s 💕`;
-  }
-}
-setInterval(updateTimer, 1000);
-updateTimer();
-
-/* =========================
-   FALLING EMOJIS (MAIN)
-========================= */
+/* -------------------
+   FALLING EMOJIS (MAIN DASHBOARD)
+------------------- */
 const mainEmojis = ["🌹", "❤️"];
 
-function createFallingEmoji() {
+function createMainEmoji() {
   const emoji = document.createElement("div");
-  emoji.className = "emoji";
+  emoji.classList.add("emoji");
   emoji.innerText = mainEmojis[Math.floor(Math.random() * mainEmojis.length)];
 
-  const size = 18 + Math.random() * 14;
-  const angle = Math.random() * 360;
-  const spinDuration = 20 + Math.random() * 20;
-  const fallDuration = 14 + Math.random() * 10;
+  emoji.style.left = Math.random() * (window.innerWidth - 30) + "px";
+  emoji.style.fontSize = 18 + Math.random() * 14 + "px";
 
-  emoji.style.left = Math.random() * window.innerWidth + "px";
-  emoji.style.fontSize = size + "px";
+  const angle = Math.random() * 360;
+  const spinDuration = 25 + Math.random() * 20;   // slower spin
+  const fallDuration = 16 + Math.random() * 10;   // MUCH longer fall
+
   emoji.style.transform = `rotate(${angle}deg)`;
   emoji.style.animation = `
     fall ${fallDuration}s linear,
@@ -50,24 +22,26 @@ function createFallingEmoji() {
   `;
 
   document.body.appendChild(emoji);
-  setTimeout(() => emoji.remove(), fallDuration * 1000);
+
+  setTimeout(() => emoji.remove(), fallDuration * 1000 + 2000);
 }
 
-setInterval(createFallingEmoji, 500);
+setInterval(createMainEmoji, 600);
 
-/* =========================
-   SPARKLING HEARTS IN TIMER BLOCK
-========================= */
+/* -------------------
+   SPARKLING HEARTS IN TIME BLOCK
+------------------- */
 const timeBlock = document.querySelector('[data-function="time"]');
 
-function createSparkleHeart() {
+function createTopHeart() {
   if (!timeBlock) return;
 
   const heart = document.createElement("div");
-  heart.className = "emoji sparkle";
+  heart.classList.add("emoji");
   heart.innerText = "💖";
 
   const rect = timeBlock.getBoundingClientRect();
+
   heart.style.left = rect.left + Math.random() * rect.width + "px";
   heart.style.top = rect.top + Math.random() * rect.height + "px";
   heart.style.fontSize = 16 + Math.random() * 10 + "px";
@@ -76,35 +50,19 @@ function createSparkleHeart() {
   const spinDuration = 12 + Math.random() * 18;
 
   heart.style.transform = `rotate(${angle}deg)`;
-  heart.style.animation = `sparkle 2s ease-out, spin ${spinDuration}s linear infinite`;
+  heart.style.animation = `spin ${spinDuration}s linear infinite`;
 
   document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 8000);
+
+  setTimeout(() => heart.remove(), 9000);
 }
 
-setInterval(createSparkleHeart, 700);
+setInterval(createTopHeart, 900);
 
-/* =========================
-   CLICK HEART ANIMATION
-========================= */
-document.addEventListener("click", (e) => {
-  const heart = document.createElement("div");
-  heart.className = "emoji click-heart";
-  heart.innerText = "💖";
-
-  heart.style.left = e.clientX + "px";
-  heart.style.top = e.clientY + "px";
-  heart.style.fontSize = "22px";
-
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 1200);
-});
-
-/* =========================
+/* -------------------
    SEASONAL BUTTON (TRUE CLOSEST HOLIDAY)
-========================= */
+------------------- */
 const seasonBtn = document.getElementById("seasonButton");
-
 if (seasonBtn) {
   const now = new Date();
   const year = now.getFullYear();
@@ -139,6 +97,13 @@ if (seasonBtn) {
     { name: "National boyfriend day💘", path: "/nationalboyfriendday", date: new Date(year, 9, 3) }
   ];
 
+  // adjust year so distance is accurate
+  holidays.forEach(h => {
+    if (h.date.getMonth() === 0 && now.getMonth() === 11) {
+      h.date.setFullYear(year + 1);
+    }
+  });
+
   const closest = holidays.reduce((a, b) =>
     Math.abs(b.date - now) < Math.abs(a.date - now) ? b : a
   );
@@ -147,22 +112,41 @@ if (seasonBtn) {
   seasonBtn.href = closest.path;
 }
 
-/* =========================
-   BLOCK CLICK SYSTEM
-========================= */
+
+/* -------------------
+   COUNT-UP TIMER
+------------------- */
+const startDate = new Date("May 24, 2025 00:00:00");
+
+function updateTimer() {
+  const now = new Date();
+  let diff = now - startDate;
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  diff %= (1000 * 60 * 60 * 24);
+
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  diff %= (1000 * 60 * 60);
+
+  const minutes = Math.floor(diff / (1000 * 60));
+  diff %= (1000 * 60);
+
+  const seconds = Math.floor(diff / 1000);
+
+  document.getElementById("timer").innerText =
+    `Together for ${days} days, ${hours}h ${minutes}m ${seconds}s 💕`;
+}
+
+updateTimer();
+setInterval(updateTimer, 1000);
+/* -------------------
+   BLOCK CLICK FEEDBACK
+------------------- */
 document.querySelectorAll(".block").forEach(block => {
   block.addEventListener("click", () => {
-    const func = block.dataset.function;
-    switch (func) {
-      case "time":
-        break;
-      case "season":
-        break;
-      case "photo":
-        alert("Photo album coming soon 💕");
-        break;
-      default:
-        console.log("Block clicked:", func);
-    }
+    block.style.transform = "scale(0.97)";
+    setTimeout(() => {
+      block.style.transform = "";
+    }, 150);
   });
 });
