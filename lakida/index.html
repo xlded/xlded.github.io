@@ -2,54 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lakida Dashboard 💖</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <!-- Dashboard wrapper -->
-  <div class="dashboard-wrapper">
-
-    <!-- Top timer block spans full width -->
-    <div class="block block-top" data-function="time">
-      <h2>💗 Lakida & Me 💗</h2>
-      <p id="timer">Loading love…</p>
+  <div class="dashboard-grid">
+    
+    <!-- Top wider block for count-up timer -->
+    <div class="block block-top">
+      <h1>💗 Lakida & Me 💗</h1>
+      <div class="timer" id="timer">Loading love…</div>
     </div>
-
-    <!-- Columns container -->
-    <div class="columns">
-
-      <!-- Left Column -->
-      <div class="column left-column">
-        <div class="block" data-function="season">
-          <h2>Seasonal</h2>
-          <p>Click for special events</p>
-          <a id="seasonButton" class="season-btn">Season</a>
-        </div>
-
-        <div class="block" data-function="empty">
-          <h2>Empty Block</h2>
-          <p>Placeholder 🧩</p>
-        </div>
-      </div>
-
-      <!-- Right Column -->
-      <div class="column right-column">
-        <div class="block" data-function="photo">
-          <h2>Photo Album</h2>
-          <p>Coming Soon 📸</p>
-        </div>
-
-        <div class="block" data-function="empty2">
-          <h2>Extra Block</h2>
-          <p>Placeholder 🧩</p>
-        </div>
-      </div>
-
-    </div> <!-- end columns -->
-
-  </div> <!-- end dashboard-wrapper -->
+    
+    <!-- Middle Left: Seasonal button -->
+    <div class="block block-middle-left">
+      <a id="seasonButton" class="season-btn">Season</a>
+    </div>
+    
+    <!-- Middle Right: Photo Album placeholder -->
+    <div class="block block-middle-right">
+      <p>📸 Photo Album (Coming Soon)</p>
+    </div>
+    
+    <!-- Bottom Left: Empty block -->
+    <div class="block block-bottom-left">
+      <p>🧩 Empty Block</p>
+    </div>
+    
+  </div>
 
   <script src="script.js"></script>
 </body>
