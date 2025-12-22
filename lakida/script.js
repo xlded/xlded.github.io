@@ -1,58 +1,82 @@
-// ==============================
-// SETTINGS
-// ==============================
-const emojiCount = 25; // number of emojis
-const emojisDefault = ["💖","🥀"]; // normal dashboard emojis
-const emojisChristmas = ["🎄","❄️","🎁"]; // christmas emojis
-const emojisHalloween = ["🎃","👻","🍬"]; // halloween emojis
+const mainEmojis = ["🌹", "💔"];
+const topBlock = document.querySelector(".block-top");
 
-const container = document.body;
+function createMainEmoji() {
+  const emoji = document.createElement("div");
+  emoji.classList.add("emoji");
+  emoji.innerText = mainEmojis[Math.floor(Math.random() * mainEmojis.length)];
 
-// Determine which emoji set to use based on month
-const month = new Date().getMonth() + 1;
-let emojis = emojisDefault;
-if (month === 12) emojis = emojisChristmas;
-if (month === 10) emojis = emojisHalloween;
+  // random position across whole screen
+  emoji.style.left = Math.random() * (window.innerWidth - 30) + "px";
+  emoji.style.fontSize = 18 + Math.random() * 14 + "px";
 
-// ==============================
-// CREATE FALLING EMOJIS
-// ==============================
-function createEmoji() {
-  const span = document.createElement("span");
-  span.classList.add("emoji");
-  span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-  span.style.left = Math.random() * window.innerWidth + "px"; // random horizontal start
-  span.style.fontSize = (16 + Math.random() * 24) + "px"; // random size
-  span.style.transform = `rotate(${Math.random()*360}deg)`; // random starting rotation
-  span.style.animationDuration = (8 + Math.random()*4) + "s"; // fall speed
-  span.style.animationDelay = Math.random() * 5 + "s"; // stagger start
-  container.appendChild(span);
+  // slow random spin & random start angle
+  const angle = Math.random() * 360;
+  emoji.style.transform = `rotate(${angle}deg)`;
+  const spinDuration = 20 + Math.random() * 15; // 20–35s
+  const fallDuration = 8 + Math.random() * 6; // 8–14s
+  emoji.style.animation = `fall ${fallDuration}s linear, spin ${spinDuration}s linear infinite`;
 
-  // Remove emoji after falling out of screen
-  span.addEventListener("animationiteration", () => {
-    span.remove();
-    createEmoji();
-  });
+  document.body.appendChild(emoji);
+  setTimeout(() => emoji.remove(), fallDuration * 1000);
 }
 
-// Initialize emojis
-for (let i=0; i<emojiCount; i++) createEmoji();
+setInterval(createMainEmoji, 500);
 
-// ==============================
-// TIMER COUNT-UP
-// ==============================
-const timerEl = document.querySelector(".timer");
-const startDate = new Date("2025-05-24T00:00:00");
+/* Extra hearts in top block */
+function createTopHeart() {
+  const heart = document.createElement("div");
+  heart.classList.add("emoji");
+  heart.innerText = "💖";
 
+  const rect = topBlock.getBoundingClientRect();
+  heart.style.left = rect.left + Math.random() * rect.width + "px";
+  heart.style.top = rect.top + Math.random() * rect.height + "px";
+  heart.style.fontSize = 18 + Math.random() * 10 + "px";
+
+  const angle = Math.random() * 360;
+  const spinDuration = 10 + Math.random() * 15;
+  heart.style.transform = `rotate(${angle}deg)`;
+  heart.style.animation = `spin ${spinDuration}s linear infinite`;
+
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 10000);
+}
+
+setInterval(createTopHeart, 800);
+
+/* Count-up timer */
+const startDate = new Date("May 24, 2025 00:00:00");
 function updateTimer() {
   const now = new Date();
-  const diff = now - startDate;
+  let diff = now - startDate;
+
   const days = Math.floor(diff / (1000*60*60*24));
-  const hours = Math.floor((diff / (1000*60*60)) % 24);
-  const minutes = Math.floor((diff / (1000*60)) % 60);
-  const seconds = Math.floor((diff / 1000) % 60);
-  timerEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  diff %= (1000*60*60*24);
+  const hours = Math.floor(diff / (1000*60*60));
+  diff %= (1000*60*60);
+  const minutes = Math.floor(diff / (1000*60));
+  diff %= (1000*60);
+  const seconds = Math.floor(diff / 1000);
+
+  document.getElementById("timer").innerText =
+    `Together for ${days} days, ${hours}h ${minutes}m ${seconds}s 💕`;
 }
 
 setInterval(updateTimer, 1000);
 updateTimer();
+
+/* Seasonal Button */
+const month = new Date().getMonth();
+const seasonBtn = document.getElementById("seasonButton");
+if (month === 11) {
+  seasonBtn.innerText = "🎄 Christmas";
+  seasonBtn.href = "/lakida/christmas";
+  seasonBtn.classList.add("christmas");
+} else if (month >= 8 && month <= 10) {
+  seasonBtn.innerText = "🎃 Halloween";
+  seasonBtn.href = "/lakida/halloween";
+  seasonBtn.classList.add("halloween");
+} else {
+  seasonBtn.style.display = "none";
+}
