@@ -2,35 +2,54 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lakida Dashboard 💖</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+  <!-- Dashboard wrapper -->
   <div class="dashboard-wrapper">
 
-    <!-- Example Blocks -->
-    <div class="block" data-function="time">
+    <!-- Top timer block spans full width -->
+    <div class="block block-top" data-function="time">
       <h2>💗 Lakida & Me 💗</h2>
       <p id="timer">Loading love…</p>
     </div>
 
-    <div class="block" data-function="season">
-      <h2>Seasonal</h2>
-      <p>Click for special events</p>
-      <a id="seasonButton" class="season-btn">Season</a>
-    </div>
+    <!-- Columns container -->
+    <div class="columns">
 
-    <div class="block" data-function="photo">
-      <h2>Photo Album</h2>
-      <p>Coming Soon 📸</p>
-    </div>
+      <!-- Left Column -->
+      <div class="column left-column">
+        <div class="block" data-function="season">
+          <h2>Seasonal</h2>
+          <p>Click for special events</p>
+          <a id="seasonButton" class="season-btn">Season</a>
+        </div>
 
-    <div class="block" data-function="empty">
-      <h2>Empty Block</h2>
-      <p>Placeholder 🧩</p>
-    </div>
+        <div class="block" data-function="empty">
+          <h2>Empty Block</h2>
+          <p>Placeholder 🧩</p>
+        </div>
+      </div>
 
-  </div>
+      <!-- Right Column -->
+      <div class="column right-column">
+        <div class="block" data-function="photo">
+          <h2>Photo Album</h2>
+          <p>Coming Soon 📸</p>
+        </div>
+
+        <div class="block" data-function="empty2">
+          <h2>Extra Block</h2>
+          <p>Placeholder 🧩</p>
+        </div>
+      </div>
+
+    </div> <!-- end columns -->
+
+  </div> <!-- end dashboard-wrapper -->
 
   <script src="script.js"></script>
 </body>
