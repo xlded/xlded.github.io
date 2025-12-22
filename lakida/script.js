@@ -62,8 +62,11 @@ setInterval(createTopHeart, 900);
 /* -------------------
    SEASONAL BUTTON (TRUE CLOSEST HOLIDAY)
 ------------------- */
-const seasonBtn = document.getElementById("seasonButton");
-if (seasonBtn) {
+document.addEventListener("DOMContentLoaded", () => {
+
+  const seasonBtn = document.getElementById("seasonButton");
+  if (!seasonBtn) return;
+
   const now = new Date();
   const year = now.getFullYear();
 
@@ -97,20 +100,13 @@ if (seasonBtn) {
     { name: "National boyfriend day💘", path: "/nationalboyfriendday", date: new Date(year, 9, 3) }
   ];
 
-  // adjust year so distance is accurate
-  holidays.forEach(h => {
-    if (h.date.getMonth() === 0 && now.getMonth() === 11) {
-      h.date.setFullYear(year + 1);
-    }
-  });
-
   const closest = holidays.reduce((a, b) =>
     Math.abs(b.date - now) < Math.abs(a.date - now) ? b : a
   );
 
   seasonBtn.innerText = closest.name;
   seasonBtn.href = closest.path;
-}
+});
 
 
 /* -------------------
