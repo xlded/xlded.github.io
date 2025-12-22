@@ -1,48 +1,51 @@
-const mainEmojis = ["🌹", "❤️"];
+/* ------------------
+   FALLING EMOJIS
+------------------ */
+const emojis = ["🌹", "❤️"];
 
-function createMainEmoji() {
-  const emoji = document.createElement("div");
-  emoji.classList.add("emoji");
-  emoji.innerText = mainEmojis[Math.floor(Math.random() * mainEmojis.length)];
+function spawnEmoji() {
+  const e = document.createElement("div");
+  e.className = "emoji";
+  e.textContent = emojis[Math.floor(Math.random() * emojis.length)];
 
-  // Ensure proper left position on desktop and mobile
-  const maxLeft = document.body.clientWidth - 30;
-  emoji.style.left = Math.random() * maxLeft + "px";
+  const size = 18 + Math.random() * 14;
+  const left = Math.random() * window.innerWidth;
+  const fallTime = 8 + Math.random() * 6;
+  const spinTime = 15 + Math.random() * 20;
+  const startAngle = Math.random() * 360;
 
-  emoji.style.fontSize = 18 + Math.random() * 14 + "px";
+  e.style.left = left + "px";
+  e.style.fontSize = size + "px";
+  e.style.transform = `rotate(${startAngle}deg)`;
+  e.style.animationDuration = `${fallTime}s, ${spinTime}s`;
 
-  // random rotation & slow spin
-  const angle = Math.random() * 360;
-  const spinDuration = 20 + Math.random() * 15;
-  const fallDuration = 8 + Math.random() * 6;
-  emoji.style.transform = `rotate(${angle}deg)`;
-  emoji.style.animation = `fall ${fallDuration}s linear, spin ${spinDuration}s linear infinite`;
+  document.body.appendChild(e);
 
-  document.body.appendChild(emoji);
-  setTimeout(() => emoji.remove(), fallDuration * 1000);
+  setTimeout(() => e.remove(), fallTime * 1000);
 }
 
-setInterval(createMainEmoji, 500);
+setInterval(spawnEmoji, 500);
 
-/* Top timer hearts */
-const timeBlock = document.querySelector('[data-function="time"]');
-function createTopHeart() {
-  const heart = document.createElement("div");
-  heart.classList.add("emoji");
-  heart.innerText = "💖";
+/* ------------------
+   COUNT UP TIMER
+------------------ */
+const startDate = new Date("May 24, 2025 00:00:00");
 
-  const rect = timeBlock.getBoundingClientRect();
-  heart.style.left = rect.left + Math.random() * rect.width + "px";
-  heart.style.top = rect.top + Math.random() * rect.height + "px";
-  heart.style.fontSize = 18 + Math.random() * 10 + "px";
+function updateTimer() {
+  const now = new Date();
+  let diff = now - startDate;
 
-  const angle = Math.random() * 360;
-  const spinDuration = 10 + Math.random() * 15;
-  heart.style.transform = `rotate(${angle}deg)`;
-  heart.style.animation = `spin ${spinDuration}s linear infinite`;
+  const days = Math.floor(diff / 86400000);
+  diff %= 86400000;
+  const hours = Math.floor(diff / 3600000);
+  diff %= 3600000;
+  const minutes = Math.floor(diff / 60000);
+  diff %= 60000;
+  const seconds = Math.floor(diff / 1000);
 
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 10000);
+  document.getElementById("timer").textContent =
+    `Together for ${days} days, ${hours}h ${minutes}m ${seconds}s 💕`;
 }
 
-setInterval(createTopHeart, 800);
+updateTimer();
+setInterval(updateTimer, 1000);
