@@ -159,7 +159,7 @@ fetch("daily notes.txt")
   .then(res => res.text())
   .then(text => {
     const notes = text
-      .split(/\n\s*\n/) // blank line = separator
+      .split(";")               // ← SEMICOLON SEPARATOR
       .map(n => n.trim())
       .filter(Boolean);
 
