@@ -5,16 +5,16 @@ body {
   overflow-x: hidden;
   min-height: 100vh;
   padding: 20px;
-  position: relative; /* emojis absolute relative to body */
+  position: relative; /* emojis are absolute relative to body */
 }
 
 /* Grid Layout */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto auto; /* auto-size to blocks */
   grid-auto-rows: auto;
   gap: 20px;
-  justify-content: start;
+  justify-content: start; /* align left/top */
   align-items: start;
 }
 
@@ -26,14 +26,14 @@ body {
   text-align: center;
   box-shadow: 0 10px 30px rgba(255,105,180,0.2);
   backdrop-filter: blur(10px);
-  width: 280px;
+  width: 280px; /* fixed width so they don’t stretch */
   height: auto;
 }
 
 /* Top block */
 .block-top {
   grid-column: 1 / span 2;
-  width: 600px;
+  width: 600px; /* slightly wider */
 }
 
 /* Timer styling */
@@ -50,6 +50,7 @@ body {
   text-decoration: none;
   font-weight: 600;
   color: white;
+  display: inline-block;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -71,18 +72,19 @@ body {
   position: absolute;
   top: -50px;
   font-size: 24px;
-  animation: fall linear infinite;
-  opacity: 0.8;
+  pointer-events: none;
+  animation-name: fall, spin;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
   transform-origin: center;
 }
 
-/* Spin animation */
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+@keyframes fall {
+  from { transform: translateY(0); }
+  to { transform: translateY(110vh); }
 }
 
-/* Fall animation already defined */
-@keyframes fall {
-  to { transform: translateY(110vh); }
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
