@@ -142,6 +142,66 @@ function updateTimer() {
     `Together for ${days} days, ${hours}h ${minutes}m ${seconds}s 💕`;
 }
 
+/* -------------------
+   DAILY NOTES (MIDNIGHT + PASSWORD REROLL)
+------------------- */
+
+const NOTES_PASSWORD = "0976";
+const NOTES_KEY = "dailyNoteIndex";
+const NOTES_DATE_KEY = "dailyNoteDate";
+
+function getTodayString() {
+  const d = new Date();
+  return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+}
+
+fetch("daily notes.txt")
+  .then(res => res.text())
+  .then(text => {
+    const notes = text
+      .split(/\n\s*\n/) // blank line = separator
+      .map(n => n.trim())
+      .filter(Boolean);
+
+    if (!notes.length) return;
+
+    const noteEl = document.getElementById("dailyNoteText");
+    const block = document.getElementById("dailyNotesBlock");
+    if (!noteEl || !block) return;
+
+    const today = getTodayString();
+    let savedDate = localStorage.getItem(NOTES_DATE_KEY);
+    let index = localStorage.getItem(NOTES_KEY);
+
+    // New day → pick new note
+    if (savedDate !== today || index === null) {
+      index = Math.floor(Math.random() * notes.length);
+      localStorage.setItem(NOTES_KEY, index);
+      localStorage.setItem(NOTES_DATE_KEY, today);
+    }
+
+    noteEl.innerText = notes[index];
+
+    // Password-protected reroll
+    block.addEventListener("click", () => {
+      const pass = prompt("🔒 Enter password to reroll today’s note:");
+      if (pass !== NOTES_PASSWORD) return;
+
+      let newIndex;
+      do {
+        newIndex = Math.floor(Math.random() * notes.length);
+      } while (newIndex == index && notes.length > 1);
+
+      index = newIndex;
+      localStorage.setItem(NOTES_KEY, index);
+      noteEl.innerText = notes[index];
+    });
+  })
+  .catch(err => {
+    console.error("Daily notes failed:", err);
+  });
+
+
 updateTimer();
 setInterval(updateTimer, 1000);
 /* -------------------
