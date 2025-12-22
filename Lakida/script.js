@@ -1,7 +1,7 @@
 /* -------------------
    FALLING EMOJIS (MAIN DASHBOARD)
 ------------------- */
-const mainEmojis = ["🌹", "❤️"];
+const mainEmojis = ["🌹", "💔"];
 
 function createMainEmoji() {
   const emoji = document.createElement("div");
@@ -47,16 +47,16 @@ updateTimer();
 /* -------------------
    SEASON BUTTON LOGIC
 ------------------- */
-const month = new Date().getMonth(); // 0 = Jan
+const month = new Date().getMonth();
 const seasonBtn = document.getElementById("seasonButton");
 
 if (month === 11) { // December
   seasonBtn.innerText = "🎄 Christmas";
-  seasonBtn.href = "/lakida/christmas";
+  seasonBtn.href = "/lakida/Christmas.com/index.html";
   seasonBtn.classList.add("christmas");
 } else if (month >= 8 && month <= 10) { // Fall
   seasonBtn.innerText = "🎃 Halloween";
-  seasonBtn.href = "/lakida/halloween";
+  seasonBtn.href = "/lakida/Halloween.com/index.html";
   seasonBtn.classList.add("halloween");
 } else {
   seasonBtn.style.display = "none";
