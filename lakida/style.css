@@ -2,28 +2,21 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: linear-gradient(180deg, #ffe4ef, #ffd1e3);
+  overflow-x: hidden;
   min-height: 100vh;
-  overflow: hidden;
+  padding: 20px;
+  position: relative; /* emojis absolute to body */
   display: flex;
-  justify-content: center; /* horizontal center */
-  align-items: center;     /* vertical center */
-  position: relative;
+  justify-content: center; /* center grid horizontally */
 }
 
-/* Wrapper with two columns */
-.dashboard-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; /* blocks stack top-down in each column */
-  gap: 40px;
-  flex-wrap: wrap;
-}
-
-/* Columns */
-.column {
-  display: flex;
-  flex-direction: column;
+/* Grid Layout */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-auto-rows: auto;
   gap: 20px;
+  justify-items: center; /* center blocks in each column */
 }
 
 /* Blocks */
@@ -34,16 +27,26 @@ body {
   text-align: center;
   box-shadow: 0 10px 30px rgba(255,105,180,0.2);
   backdrop-filter: blur(10px);
-  width: 280px;
-  cursor: pointer;
+  width: 100%;
+  max-width: 280px; /* small block width */
+  height: auto;
 }
 
-/* Top timer block can span both columns if desired */
-.block[data-function="time"] {
-  width: 600px;
+/* Top block */
+.block-top {
+  grid-column: 1 / -1; /* span full width */
+  max-width: 600px;
+  width: 100%;
 }
 
-/* Buttons */
+/* Timer styling */
+.timer {
+  margin-top: 12px;
+  font-size: 18px;
+  color: #555;
+}
+
+/* Season Button */
 .season-btn {
   padding: 12px 20px;
   border-radius: 16px;
@@ -59,10 +62,15 @@ body {
   box-shadow: 0 10px 20px rgba(0,0,0,0.15);
 }
 
-.christmas { background: linear-gradient(135deg, #ff5c5c, #c92a2a); }
-.halloween { background: linear-gradient(135deg, #ff9f1c, #ff6f00); }
+.christmas {
+  background: linear-gradient(135deg, #ff5c5c, #c92a2a);
+}
 
-/* Falling emojis */
+.halloween {
+  background: linear-gradient(135deg, #ff9f1c, #ff6f00);
+}
+
+/* Falling Emojis */
 .emoji {
   position: absolute;
   top: -50px;
@@ -74,16 +82,37 @@ body {
   transform-origin: center;
 }
 
-@keyframes fall { from { transform: translateY(0); } to { transform: translateY(110vh); } }
-@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes fall {
+  from { transform: translateY(0); }
+  to { transform: translateY(110vh); }
+}
 
-/* Responsive */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Mobile tweaks */
 @media (max-width: 600px) {
-  .dashboard-wrapper {
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
+  body {
+    padding: 10px;
   }
-  .block[data-function="time"] { width: 90%; }
-  .block { width: 90%; }
+
+  .block-top {
+    max-width: 100%;
+    padding: 16px;
+  }
+
+  .block {
+    max-width: 100%;
+    padding: 16px;
+  }
+
+  .timer {
+    font-size: 16px;
+  }
+
+  .season-btn {
+    padding: 10px 16px;
+  }
 }
