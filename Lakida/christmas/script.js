@@ -1,21 +1,44 @@
-/* -------------------
-   FALLING EMOJIS (MAIN DASHBOARD)
-------------------- */
-const mainEmojis = ["🌹", "❤️"];
+/* =========================
+   CHRISTMAS EMOJIS
+========================= */
+const emojis = ["🎄", "❄️", "🎁"];
 
-function createMainEmoji() {
+/* -------------------
+   SNOW PILE SETUP
+------------------- */
+const snowPile = document.createElement("div");
+snowPile.id = "snowPile";
+document.body.appendChild(snowPile);
+let snowHeight = 0;
+
+/* -------------------
+   FALLING EMOJIS
+------------------- */
+function createEmoji() {
   const emoji = document.createElement("div");
   emoji.classList.add("emoji");
-  emoji.innerText = mainEmojis[Math.floor(Math.random() * mainEmojis.length)];
+  emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
   emoji.style.left = Math.random() * 100 + "vw";
   emoji.style.fontSize = 18 + Math.random() * 14 + "px";
   emoji.style.animationDuration = 8 + Math.random() * 6 + "s";
 
   document.body.appendChild(emoji);
+
+  emoji.addEventListener("animationend", () => {
+    pileSnow();
+  });
+
   setTimeout(() => emoji.remove(), 15000);
 }
 
-setInterval(createMainEmoji, 500);
+setInterval(createEmoji, 500);
+
+function pileSnow() {
+  if (snowHeight < 120) {
+    snowHeight += 2;
+    snowPile.style.height = snowHeight + "px";
+  }
+}
 
 /* -------------------
    COUNT-UP TIMER
@@ -45,19 +68,17 @@ setInterval(updateTimer, 1000);
 updateTimer();
 
 /* -------------------
-   SEASON BUTTON LOGIC
+   MUSIC BUTTON
 ------------------- */
-const month = new Date().getMonth(); // 0 = Jan
-const seasonBtn = document.getElementById("seasonButton");
+const music = document.getElementById("music");
+const musicBtn = document.getElementById("musicBtn");
 
-if (month === 11) { // December
-  seasonBtn.innerText = "🎄 Christmas";
-  seasonBtn.href = "/lakida/Christmas.com/index.html";
-  seasonBtn.classList.add("christmas");
-} else if (month >= 8 && month <= 10) { // Fall
-  seasonBtn.innerText = "🎃 Halloween";
-  seasonBtn.href = "/lakida/Halloween.com/index.html";
-  seasonBtn.classList.add("halloween");
-} else {
-  seasonBtn.style.display = "none";
-}
+musicBtn.addEventListener("click", () => {
+  if (music.paused) {
+    music.play();
+    musicBtn.innerText = "🔇 Mute Music";
+  } else {
+    music.pause();
+    musicBtn.innerText = "🔊 Play Music";
+  }
+});
