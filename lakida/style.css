@@ -3,25 +3,22 @@ html, body {
   padding: 0;
   height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: linear-gradient(180deg, #ffe4ef, #ffd1e3);
   overflow: hidden;
-}
-
-body {
   display: flex;
-  justify-content: center; /* horizontal center */
-  align-items: center;     /* vertical center */
+  justify-content: center;
+  align-items: center;
+  color-scheme: light; /* bypass dark mode */
+  background: linear-gradient(180deg, #ffe4ef, #ffd1e3) !important; /* force light pink */
 }
 
-/* Make grid take full height of viewport */
+/* Dashboard grid */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 280px 280px; /* two columns of fixed width */
+  grid-template-columns: 280px 280px; /* two fixed columns */
   grid-auto-rows: auto;
   gap: 20px;
   justify-items: center;
   align-items: center;
-  height: auto; /* auto height based on content */
 }
 
 /* Blocks */
@@ -32,14 +29,15 @@ body {
   text-align: center;
   box-shadow: 0 10px 30px rgba(255,105,180,0.2);
   backdrop-filter: blur(10px);
-  width: 280px; /* fixed width */
+  width: 280px; 
   height: auto;
 }
 
-/* Top block */
+/* Top block wider to add space between middle left/right */
 .block-top {
-  grid-column: 1 / span 2;
-  width: 600px; /* slightly wider */
+  grid-column: 1 / span 2; 
+  width: 650px; /* increased from 600px */
+  max-width: 90vw; /* responsive max width for mobile */
 }
 
 /* Timer styling */
@@ -97,6 +95,10 @@ body {
 
 /* Mobile tweaks */
 @media (max-width: 600px) {
+  body {
+    background: linear-gradient(180deg, #ffe4ef, #ffd1e3) !important; /* force pink on mobile too */
+  }
+
   .dashboard-grid {
     grid-template-columns: 1fr; /* stack vertically */
   }
@@ -104,11 +106,13 @@ body {
   .block-top {
     width: 100%;
     max-width: 280px;
+    padding: 16px;
   }
 
   .block {
     width: 100%;
     max-width: 280px;
+    padding: 16px;
   }
 
   .timer {
