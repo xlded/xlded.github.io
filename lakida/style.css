@@ -1,26 +1,20 @@
-/* -------------------
-   RESET
-------------------- */
+/* RESET */
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
-/* -------------------
-   BODY
-------------------- */
+/* BODY */
 body {
   min-height: 100vh;
   background: #ffe6f0;
-  font-family: "Segoe UI", system-ui, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   overflow-x: hidden;
-  color: #4a2a35;
+  color: #333;
 }
 
-/* -------------------
-   FALLING EMOJIS
-------------------- */
+/* FALLING EMOJIS */
 .emoji {
   position: fixed;
   top: -40px;
@@ -29,15 +23,13 @@ body {
   user-select: none;
 }
 
-/* -------------------
-   DASHBOARD WRAPPER
-------------------- */
+/* DASHBOARD WRAPPER */
 .dashboard-wrapper {
   position: relative;
   z-index: 5;
 
   min-height: 100vh;
-  padding: 24px 16px;
+  padding: 20px;
 
   display: flex;
   flex-direction: column;
@@ -45,68 +37,35 @@ body {
   justify-content: center;
 }
 
-/* -------------------
-   BLOCK BASE (RESTORED)
-------------------- */
+/* BASE CARD STYLE (NORMAL WHITE BOXES) */
 .block {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 18px;
+  background: #ffffff;
+  border-radius: 16px;
   padding: 20px;
 
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.08),
-    0 0 14px rgba(255, 120, 180, 0.15);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
 
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-/* -------------------
-   HOVER / TAP
-------------------- */
-.block:hover {
-  transform: translateY(-3px);
-  box-shadow:
-    0 8px 18px rgba(0, 0, 0, 0.12),
-    0 0 22px rgba(255, 120, 180, 0.25);
-}
-
-@media (hover: none) {
-  .block:active {
-    transform: scale(0.98);
-  }
-}
-
-/* -------------------
-   TEXT
-------------------- */
-.block h2 {
-  font-size: 1.15rem;
-  margin-bottom: 6px;
   text-align: center;
+}
+
+/* TEXT */
+.block h2 {
+  font-size: 1.1rem;
+  margin-bottom: 6px;
 }
 
 .block p {
   font-size: 0.95rem;
-  text-align: center;
 }
 
-/* -------------------
-   TOP TIME BLOCK
-------------------- */
+/* TOP TIME BLOCK */
 .block-top {
   width: 100%;
   max-width: 720px;
-  margin-bottom: 22px;
+  margin-bottom: 24px;
 }
 
-/* -------------------
-   GRID FOR LOWER BLOCKS
-------------------- */
+/* GRID UNDER TOP BLOCK */
 .columns {
   width: 100%;
   max-width: 720px;
@@ -116,35 +75,26 @@ body {
   gap: 18px;
 }
 
-/* Keep cards normal-sized */
+/* KEEP LOWER BLOCKS NORMAL SIZE */
 .columns .block {
   min-height: 110px;
 }
 
-/* -------------------
-   SEASON BUTTON
-------------------- */
+/* SEASON BUTTON */
 .season-btn {
   display: inline-block;
   margin-top: 10px;
   padding: 8px 14px;
 
-  border-radius: 999px;
   background: #ffd1e4;
+  border-radius: 999px;
+
   color: #5c1f3a;
-  font-weight: 600;
+  font-weight: bold;
   text-decoration: none;
-
-  box-shadow: 0 2px 8px rgba(255, 120, 180, 0.3);
 }
 
-.season-btn:hover {
-  transform: scale(1.05);
-}
-
-/* -------------------
-   MOBILE
-------------------- */
+/* MOBILE */
 @media (max-width: 640px) {
   .columns {
     grid-template-columns: 1fr;
