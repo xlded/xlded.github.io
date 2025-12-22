@@ -1,3 +1,6 @@
+/* ==============================
+   GLOBAL BODY & HTML
+============================== */
 html, body {
   margin: 0;
   padding: 0;
@@ -5,23 +8,29 @@ html, body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   overflow: hidden;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  color-scheme: light; /* bypass dark mode */
-  background: linear-gradient(180deg, #ffe4ef, #ffd1e3) !important; /* force light pink */
+  justify-content: center; /* center horizontally */
+  align-items: center;     /* center vertically */
+  color-scheme: light;     /* bypass dark mode */
+  background: linear-gradient(180deg, #ffe4ef, #ffd1e3) !important; /* light pink */
 }
 
-/* Dashboard grid */
+/* ==============================
+   DASHBOARD GRID
+============================== */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 280px 280px; /* two fixed columns */
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 flexible columns */
   grid-auto-rows: auto;
   gap: 20px;
   justify-items: center;
   align-items: center;
+  width: 100%;
+  max-width: 700px; /* ensure top block + middle blocks fit */
 }
 
-/* Blocks */
+/* ==============================
+   BLOCK STYLING
+============================== */
 .block {
   background: rgba(255,255,255,0.85);
   border-radius: 24px;
@@ -29,25 +38,28 @@ html, body {
   text-align: center;
   box-shadow: 0 10px 30px rgba(255,105,180,0.2);
   backdrop-filter: blur(10px);
-  width: 280px; 
+  width: 100%;
+  max-width: 280px; /* small block width */
   height: auto;
 }
 
-/* Top block wider to add space between middle left/right */
+/* Top block slightly wider */
 .block-top {
-  grid-column: 1 / span 2; 
-  width: 650px; /* increased from 600px */
-  max-width: 90vw; /* responsive max width for mobile */
+  grid-column: 1 / span 2; /* span both columns */
+  width: 100%;
+  max-width: 650px;
 }
 
-/* Timer styling */
+/* Timer inside top block */
 .timer {
   margin-top: 12px;
   font-size: 18px;
   color: #555;
 }
 
-/* Season Button */
+/* ==============================
+   SEASON BUTTON
+============================== */
 .season-btn {
   padding: 12px 20px;
   border-radius: 16px;
@@ -71,7 +83,9 @@ html, body {
   background: linear-gradient(135deg, #ff9f1c, #ff6f00);
 }
 
-/* Falling Emojis */
+/* ==============================
+   FALLING EMOJIS
+============================== */
 .emoji {
   position: absolute;
   top: -50px;
@@ -93,25 +107,26 @@ html, body {
   to { transform: rotate(360deg); }
 }
 
-/* Mobile tweaks */
+/* ==============================
+   MOBILE RESPONSIVE
+============================== */
 @media (max-width: 600px) {
   body {
-    background: linear-gradient(180deg, #ffe4ef, #ffd1e3) !important; /* force pink on mobile too */
+    background: linear-gradient(180deg, #ffe4ef, #ffd1e3) !important;
   }
 
   .dashboard-grid {
-    grid-template-columns: 1fr; /* stack vertically */
+    grid-template-columns: 1fr; /* stack blocks vertically */
+    gap: 15px;
   }
 
   .block-top {
-    width: 100%;
-    max-width: 280px;
+    max-width: 100%;
     padding: 16px;
   }
 
   .block {
-    width: 100%;
-    max-width: 280px;
+    max-width: 100%;
     padding: 16px;
   }
 
