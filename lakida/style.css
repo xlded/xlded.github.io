@@ -16,7 +16,7 @@ body {
   min-height: 100vh;
   display: grid;
   grid-template-rows: auto auto;
-  gap: 32px;
+  gap: 36px;
   justify-items: center;
   align-content: center;
   padding: 24px;
@@ -26,24 +26,34 @@ body {
 /* Blocks */
 .block {
   background: rgba(255,255,255,0.9);
-  border-radius: 24px;
-  padding: 24px;
+  border-radius: 26px;
+  padding: 26px;
   text-align: center;
-  width: 260px;
-  box-shadow: 0 12px 30px rgba(255,105,180,0.25);
+  width: 320px; /* wider on desktop */
+  box-shadow: 0 14px 34px rgba(255,105,180,0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
+  cursor: pointer;
+}
+
+/* Click animation */
+.block:active {
+  transform: scale(0.97);
+  box-shadow: 0 8px 20px rgba(255,105,180,0.25);
 }
 
 /* Wide top block */
 .block-wide {
   width: 100%;
-  max-width: 620px;
+  max-width: 700px;
+  overflow: hidden; /* keeps sparkles inside */
 }
 
 /* Bottom grid */
 .blocks-grid {
   display: grid;
-  grid-template-columns: repeat(2, 260px);
-  gap: 24px;
+  grid-template-columns: repeat(2, 320px);
+  gap: 28px;
 }
 
 /* Text */
@@ -63,10 +73,34 @@ p {
   margin-top: 14px;
 }
 
-/* Emojis */
+/* Sparkling hearts */
+.sparkle {
+  position: absolute;
+  bottom: 10px;
+  font-size: 16px;
+  opacity: 0;
+  animation: sparkle 4s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes sparkle {
+  0% {
+    transform: translateY(0) scale(0.5);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-80px) scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* Falling emojis */
 .emoji {
   position: absolute;
-  top: -40px;
+  top: -50px;
   pointer-events: none;
   animation-name: fall, spin;
   animation-timing-function: linear;
@@ -75,7 +109,7 @@ p {
 /* Animations */
 @keyframes fall {
   to {
-    transform: translateY(110vh);
+    transform: translateY(120vh);
   }
 }
 
@@ -86,14 +120,23 @@ p {
 }
 
 /* Mobile */
-@media (max-width: 600px) {
+@media (max-width: 700px) {
   .blocks-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr; /* NOT one long column */
+    gap: 16px;
   }
 
-  .block,
-  .block-wide {
+  .block {
     width: 100%;
+  }
+
+  .block-wide {
     max-width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .blocks-grid {
+    grid-template-columns: 1fr;
   }
 }
