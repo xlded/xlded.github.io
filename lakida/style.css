@@ -8,10 +8,12 @@ html, body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   overflow: hidden;
   display: flex;
-  justify-content: center; /* center horizontally */
-  align-items: center;     /* center vertically */
+  justify-content: center; /* horizontal center */
+  align-items: center;     /* vertical center */
   color-scheme: light;     /* bypass dark mode */
-  background: linear-gradient(180deg, #ffe4ef, #ffd1e3) !important; /* light pink */
+  background: linear-gradient(180deg, #ffe4ef, #ffd1e3) !important; /* force light pink */
+  padding: 20px; /* extra space so blocks aren’t cut off */
+  box-sizing: border-box;
 }
 
 /* ==============================
@@ -19,13 +21,13 @@ html, body {
 ============================== */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 flexible columns */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* flexible columns */
   grid-auto-rows: auto;
   gap: 20px;
   justify-items: center;
   align-items: center;
   width: 100%;
-  max-width: 700px; /* ensure top block + middle blocks fit */
+  max-width: 1000px; /* ensures it doesn’t overflow viewport */
 }
 
 /* ==============================
@@ -39,15 +41,15 @@ html, body {
   box-shadow: 0 10px 30px rgba(255,105,180,0.2);
   backdrop-filter: blur(10px);
   width: 100%;
-  max-width: 280px; /* small block width */
+  max-width: 280px; /* block size fixed, prevents stretching */
   height: auto;
 }
 
-/* Top block slightly wider */
+/* Top block spans all columns */
 .block-top {
-  grid-column: 1 / span 2; /* span both columns */
+  grid-column: 1 / -1; /* span all available columns */
   width: 100%;
-  max-width: 650px;
+  max-width: 650px; /* slightly wider than middle blocks */
 }
 
 /* Timer inside top block */
@@ -112,7 +114,8 @@ html, body {
 ============================== */
 @media (max-width: 600px) {
   body {
-    background: linear-gradient(180deg, #ffe4ef, #ffd1e3) !important;
+    padding: 10px;
+    background: linear-gradient(180deg, #ffe4ef, #ffd1e3) !important; /* force pink on mobile */
   }
 
   .dashboard-grid {
