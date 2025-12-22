@@ -5,20 +5,23 @@ html, body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: linear-gradient(180deg, #ffe4ef, #ffd1e3);
   overflow: hidden;
-  position: relative;
-  display: flex;
-  justify-content: center; /* center horizontally */
-  align-items: center;     /* center vertically */
 }
 
-/* Dashboard grid */
+body {
+  display: flex;
+  justify-content: center; /* horizontal center */
+  align-items: center;     /* vertical center */
+}
+
+/* Make grid take full height of viewport */
 .dashboard-grid {
   display: grid;
   grid-template-columns: 280px 280px; /* two columns of fixed width */
   grid-auto-rows: auto;
   gap: 20px;
-  justify-items: center; /* center blocks in each column */
+  justify-items: center;
   align-items: center;
+  height: auto; /* auto height based on content */
 }
 
 /* Blocks */
@@ -35,7 +38,7 @@ html, body {
 
 /* Top block */
 .block-top {
-  grid-column: 1 / span 2; /* span both columns */
+  grid-column: 1 / span 2;
   width: 600px; /* slightly wider */
 }
 
