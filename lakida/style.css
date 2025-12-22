@@ -6,14 +6,14 @@ html, body {
   padding: 0;
   height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  overflow: hidden;
-  display: flex;
-  justify-content: center; /* horizontal center */
-  align-items: center;     /* vertical center */
-  color-scheme: light;     /* bypass dark mode */
   background: linear-gradient(180deg, #ffe4ef, #ffd1e3) !important; /* force light pink */
-  padding: 20px; /* extra space so blocks aren’t cut off */
+  color-scheme: light; /* bypass dark mode */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px; /* prevent blocks from touching edges */
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 /* ==============================
@@ -25,9 +25,9 @@ html, body {
   grid-auto-rows: auto;
   gap: 20px;
   justify-items: center;
-  align-items: center;
+  align-items: start;
   width: 100%;
-  max-width: 1000px; /* ensures it doesn’t overflow viewport */
+  max-width: 1000px; /* prevent overflow on desktop */
 }
 
 /* ==============================
@@ -41,15 +41,15 @@ html, body {
   box-shadow: 0 10px 30px rgba(255,105,180,0.2);
   backdrop-filter: blur(10px);
   width: 100%;
-  max-width: 280px; /* block size fixed, prevents stretching */
+  max-width: 280px; /* prevent stretching */
   height: auto;
 }
 
 /* Top block spans all columns */
 .block-top {
-  grid-column: 1 / -1; /* span all available columns */
+  grid-column: 1 / -1; /* span all columns */
   width: 100%;
-  max-width: 650px; /* slightly wider than middle blocks */
+  max-width: 650px; /* wider than normal blocks */
 }
 
 /* Timer inside top block */
@@ -112,14 +112,9 @@ html, body {
 /* ==============================
    MOBILE RESPONSIVE
 ============================== */
-@media (max-width: 600px) {
-  body {
-    padding: 10px;
-    background: linear-gradient(180deg, #ffe4ef, #ffd1e3) !important; /* force pink on mobile */
-  }
-
+@media (max-width: 700px) {
   .dashboard-grid {
-    grid-template-columns: 1fr; /* stack blocks vertically */
+    grid-template-columns: 1fr; /* stack all blocks vertically */
     gap: 15px;
   }
 
