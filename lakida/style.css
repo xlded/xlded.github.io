@@ -6,14 +6,14 @@ html, body {
   padding: 0;
   height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: linear-gradient(180deg, #ffe4ef, #ffd1e3) !important; /* force light pink */
-  color-scheme: light; /* bypass dark mode */
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px; /* prevent blocks from touching edges */
+  justify-content: center; /* center horizontally */
+  align-items: center;     /* center vertically */
+  color-scheme: light;     /* force light mode */
+  background: linear-gradient(180deg, #ffe4ef, #ffd1e3) !important;
+  overflow: hidden;
+  padding: 20px; /* space around blocks */
   box-sizing: border-box;
-  overflow-x: hidden;
 }
 
 /* ==============================
@@ -21,13 +21,13 @@ html, body {
 ============================== */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* flexible columns */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   grid-auto-rows: auto;
   gap: 20px;
   justify-items: center;
   align-items: start;
   width: 100%;
-  max-width: 1000px; /* prevent overflow on desktop */
+  max-width: 1000px; /* prevents overflow */
 }
 
 /* ==============================
@@ -41,27 +41,25 @@ html, body {
   box-shadow: 0 10px 30px rgba(255,105,180,0.2);
   backdrop-filter: blur(10px);
   width: 100%;
-  max-width: 280px; /* prevent stretching */
+  max-width: 280px;
   height: auto;
 }
 
-/* Top block spans all columns */
+/* Top block */
 .block-top {
   grid-column: 1 / -1; /* span all columns */
   width: 100%;
-  max-width: 650px; /* wider than normal blocks */
+  max-width: 650px;
 }
 
-/* Timer inside top block */
+/* Timer styling */
 .timer {
   margin-top: 12px;
   font-size: 18px;
   color: #555;
 }
 
-/* ==============================
-   SEASON BUTTON
-============================== */
+/* Season Button */
 .season-btn {
   padding: 12px 20px;
   border-radius: 16px;
@@ -89,7 +87,7 @@ html, body {
    FALLING EMOJIS
 ============================== */
 .emoji {
-  position: absolute;
+  position: absolute; /* relative to body/viewport */
   top: -50px;
   font-size: 24px;
   pointer-events: none;
@@ -114,7 +112,7 @@ html, body {
 ============================== */
 @media (max-width: 700px) {
   .dashboard-grid {
-    grid-template-columns: 1fr; /* stack all blocks vertically */
+    grid-template-columns: 1fr; /* stack blocks vertically */
     gap: 15px;
   }
 
