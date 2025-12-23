@@ -257,9 +257,26 @@ function loadMorePhotos() {
     const img = document.createElement("img");
     img.loading = "lazy";
     img.src = photoList[photoIndex++];
+
+    img.onclick = () => openViewer(img.src);
+
     photoGrid.appendChild(img);
   }
 }
+
+const photoViewer = document.getElementById("photoViewer");
+const viewerImg = document.getElementById("viewerImg");
+
+function openViewer(src) {
+  viewerImg.src = src;
+  photoViewer.classList.remove("hidden");
+}
+
+photoViewer.onclick = () => {
+  photoViewer.classList.add("hidden");
+  viewerImg.src = "";
+};
+
 
 /* -------- Infinite scroll -------- */
 photoOverlay.addEventListener("scroll", () => {

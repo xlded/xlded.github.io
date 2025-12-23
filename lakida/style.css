@@ -331,13 +331,14 @@ html, body {
 .overlay {
   position: fixed;
   inset: 0;
-  backdrop-filter: blur(10px);
-  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(12px);
+  background: transparent; /* FULLY CLEAR */
   z-index: 999;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 
 .overlay.hidden {
   display: none;
@@ -358,6 +359,41 @@ html, body {
   from { transform: translateY(40px); opacity: 0; }
   to   { transform: translateY(0); opacity: 1; }
 }
+
+.photo-viewer {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(14px);
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.photo-viewer.hidden {
+  display: none;
+}
+
+.photo-viewer img {
+  max-width: 92%;
+  max-height: 92%;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  animation: zoomIn 0.25s ease;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 
 /* ---------- Masonry Layout ---------- */
 .masonry {
