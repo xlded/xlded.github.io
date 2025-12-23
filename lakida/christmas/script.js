@@ -29,8 +29,22 @@ document.body.style.backgroundPosition = "center top";
    TYPEWRITER + BACKGROUND SCROLL
 ========================= */
 fetch(LETTER_FILE)
-  .then(res => res.text())
-  .then(text => startTypewriter(text));
+  .then(res => {
+    if (!res.ok) {
+      throw new Error("Failed to load letter file");
+    }
+    return res.text();
+  })
+  .then(text => {
+    console.log("Letter loaded successfully");
+    startTypewriter(text);
+  })
+  .catch(err => {
+    console.error(err);
+    typeEl.innerText =
+      "💔 I couldn't load the Christmas letter.\nCheck the file name and folder location.";
+  });
+
 
 function startTypewriter(text) {
   let i = 0;
