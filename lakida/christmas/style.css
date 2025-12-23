@@ -77,7 +77,10 @@ body::after {
 
 /* BUTTONS */
 #christmasBtn {
-  margin-top: 30px;
+  position: absolute;       /* absolute to allow moving */
+  top: 50%;                 /* vertical middle */
+  right: 20px;              /* distance from right edge */
+  transform: translateY(-50%); /* perfect vertical centering */
   padding: 14px 26px;
   font-size: 0.95rem;
   color: white;
@@ -91,8 +94,19 @@ body::after {
 }
 
 #christmasBtn:hover {
-  transform: scale(1.05);
+  transform: translateY(-50%) scale(1.05);
 }
+
+@media (max-width: 480px) {
+  #christmasBtn {
+    position: static;  /* normal flow on mobile */
+    transform: none;
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+  }
+}
+
 
 /* COUNTDOWN RESULT */
 #christmasResult {
@@ -127,13 +141,14 @@ body::after {
 
 @media (max-width: 480px) {
   #typewriter {
-    position: static;      /* revert to normal flow */
-    transform: none;       /* remove translate */
-    max-width: 100%;
-    font-size: 0.95rem;
-    margin-top: 60px;
+    font-size: 0.85rem; /* smaller font for small phones */
+    max-width: 90%;     /* keep some padding on the sides */
+    position: static;   /* stays in normal flow on mobile */
+    transform: none;
+    margin-top: 40px;   /* spacing from top */
   }
 }
+
 
 
 

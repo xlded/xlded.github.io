@@ -1,92 +1,108 @@
-console.log("Christmas script running");
+// ---------------------------
+// CONFIG
+// ---------------------------
+const letterFile = "letter.txt"; // your love letter file
+const christmasBtn = document.getElementById("christmasBtn");
+const christmasResult = document.getElementById("christmasResult");
+const typewriterDiv = document.getElementById("typewriter");
+const treeDiv = document.createElement("div"); // optional for syncing tree
 
-/* --------------------
-   CONFIG
--------------------- */
-const LETTER_FILE = "christmas-letter.txt?v=" + Date.now();
+// ---------------------------
+// HELPER: Typewriter effect
+// ---------------------------
+async function typeWriterEffect(callback) {
+  try {
+    const res = await fetch(letterFile);
+    let text = await res.text();
 
-/* --------------------
-   ELEMENTS
--------------------- */
-const typeEl = document.getElementById("typewriter");
-const button = document.getElementById("christmasBtn");
-const result = document.getElementById("christmasResult");
-
-/* --------------------
-   TYPEWRITER
--------------------- */
-function startTypewriter(text) {
-  let i = 0;
-  typeEl.innerHTML = "";
-  button.style.opacity = 0;
-
-  function type() {
-    if (i < text.length) {
-      typeEl.innerHTML += text[i] === "\n" ? "<br>" : text[i];
-      i++;
-      window.scrollTo(0, document.body.scrollHeight);
-      setTimeout(type, 40);
-    } else {
-      button.style.opacity = 1;
+    let i = 0;
+    function type() {
+      if (i < text.length) {
+        typewriterDiv.innerHTML += text.charAt(i);
+        i++;
+        // smooth scroll effect
+        typewriterDiv.scrollIntoView({behavior: "smooth", block: "nearest"});
+        requestAnimationFrame(type);
+      } else {
+        if (callback) callback();
+      }
     }
-  }
-
-  type();
-}
-
-/* --------------------
-   LOAD LETTER
--------------------- */
-fetch(LETTER_FILE)
-  .then(res => {
-    console.log("Fetch status:", res.status);
-    if (!res.ok) throw new Error("Letter file not found");
-    return res.text();
-  })
-  .then(text => {
-    console.log("Letter loaded");
-    startTypewriter(text);
-  })
-  .catch(err => {
+    type();
+  } catch (err) {
+    typewriterDiv.innerHTML = "💌 Failed to load letter.";
     console.error(err);
-    typeEl.innerText =
-      "❄️ The Christmas letter couldn't load.\nCheck the file name and folder.";
-  });
+    if (callback) callback();
+  }
+}
 
-/* --------------------
-   BUTTON CLICK
--------------------- */
-button.onclick = () => {
-  result.style.opacity = 1;
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
-};
-
-/* --------------------
-   COUNTDOWN + CHRISTMASES
--------------------- */
-function updateCountdown() {
+// ---------------------------
+// CALCULATE CHRISTMAS COUNT
+// ---------------------------
+function calculateChristmasCount() {
+  const start = new Date("May 24, 2025"); // relationship start
   const now = new Date();
+  const currentYear = now.getFullYear();
 
-  let nextChristmas = new Date(now.getFullYear(), 11, 25);
-  if (now > nextChristmas) {
-    nextChristmas = new Date(now.getFullYear() + 1, 11, 25);
+  // count how many Decembers have passed since May 24, 2025
+  let count = 0;
+  for (let year = 2025; year <= currentYear; year++) {
+    const xmas = new Date(year, 11, 25); // Dec 25
+    if (xmas >= start && xmas <= now) count++;
+  }
+  return count;
+}
+
+// ---------------------------
+// NEXT CHRISTMAS COUNTDOWN
+// ---------------------------
+function getNextChristmasCountdown() {
+  const now = new Date();
+  let nextXmas = new Date(now.getFullYear(), 11, 25); // Dec 25 current year
+  if (now > nextXmas) {
+    nextXmas = new Date(now.getFullYear() + 1, 11, 25);
   }
 
-  const diff = nextChristmas - now;
+  const diff = nextXmas - now;
+  const days = Math.floor(diff / (1000*60*60*24));
+  const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+  const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
+  const seconds = Math.floor((diff % (1000*60)) / 1000);
 
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((diff / (1000 * 60)) % 60);
-  const seconds = Math.floor((diff / 1000) % 60);
-
-  const startYear = 2025;
-  let spent = now.getFullYear() - startYear;
-  if (now < new Date(now.getFullYear(), 11, 25)) spent--;
-  if (spent < 0) spent = 0;
-
-  result.innerHTML = `
-    <div>${days}d ${hours}h ${minutes}m ${seconds}s</div>
-    <div>We’ve spent ${spent} Christmas${spent === 1 ? "" : "es"} together 🎄</div>
-  `;
+  return `${days}d ${hours}h ${minutes}m ${seconds}s`;
 }
+
+// ---------------------------
+// BUTTON CLICK HANDLER
+// ---------------------------
+christmasBtn.addEventListener("click", () => {
+  // Fade in countdown and Christmas count
+  christmasResult.style.opacity = 1;
+  christmasResult.innerHTML = `
+    🎄 Next Christmas: <span id="xmasCountdown">${getNextChristmasCountdown()}</span><br>
+    💖 Christmases spent together: ${calculateChristmasCount()}
+  `;
+
+  // Update countdown every second
+  setInterval(() => {
+    const countdownSpan = document.getElementById("xmasCountdown");
+    if (countdownSpan) countdownSpan.innerText = getNextChristmasCountdown();
+  }, 1000);
+});
+
+// ---------------------------
+// TYPEWRITER + SHOW BUTTON
+// ---------------------------
+typeWriterEffect(() => {
+  // show the button after typing
+  christmasBtn.style.opacity = 1;
+  christmasBtn.style.transition = "opacity 1s ease, transform 0.25s ease";
+});
+
+// ---------------------------
+// OPTIONAL: smooth tree scroll synced with typing
+// ---------------------------
+// Assuming you have a div#tree or treeDiv on the right
+// We can increment its transform based on scroll or typewriter index
+// For simplicity, attach it to main if needed
+// const mainDiv = document.querySelector(".main");
+// mainDiv.appendChild(treeDiv);
