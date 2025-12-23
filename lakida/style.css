@@ -290,3 +290,24 @@ p {
     font-size: 0.9rem;
   }
 }
+
+/* -------------------
+   NON-MAX IPHONE FIX
+   (iPhone / iPhone Pro)
+------------------- */
+@media (min-width: 381px) and (max-width: 420px) {
+
+  /* Slight compression */
+  .block {
+    padding: 14px;
+  }
+
+  .columns {
+    gap: 12px;
+  }
+
+  /* Hide 4th block ONLY */
+  .block:nth-of-type(4) {
+    display: none;
+  }
+}
