@@ -25,6 +25,13 @@ body {
   align-items: center;
 }
 
+/* Mobile override */
+@media (max-width: 768px) {
+  body {
+    background: url("background-mobile.jpg") center / cover no-repeat fixed;
+  }
+}
+
 /* Glass letter */
 .letter {
   margin-left: 7%;
