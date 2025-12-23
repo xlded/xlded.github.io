@@ -326,3 +326,62 @@ html, body {
   height: 100%;
   overflow-x: hidden;
 }
+
+/* ---------- Overlay ---------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(10px);
+  background: rgba(0,0,0,0.4);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+.slide-panel {
+  background: #111;
+  width: 90%;
+  max-width: 900px;
+  height: 85%;
+  border-radius: 20px;
+  padding: 16px;
+  overflow-y: auto;
+  animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+/* ---------- Masonry Layout ---------- */
+.masonry {
+  column-count: 2;
+  column-gap: 12px;
+}
+
+@media (min-width: 600px) {
+  .masonry { column-count: 3; }
+}
+
+@media (min-width: 900px) {
+  .masonry { column-count: 4; }
+}
+
+.masonry img {
+  width: 100%;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  break-inside: avoid;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.masonry img:hover {
+  transform: scale(1.02);
+}
