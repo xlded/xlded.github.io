@@ -1,59 +1,60 @@
+const scene = document.getElementById("scene");
 const typeEl = document.getElementById("typewriter");
-const tree = document.getElementById("tree");
 const btn = document.getElementById("christmasBtn");
 const result = document.getElementById("christmasResult");
 
 let text = "";
-let index = 0;
-let linesTyped = 0;
+let i = 0;
+let lines = 0;
 
-/* -------- Load letter.txt -------- */
+/* Load letter */
 fetch("letter.txt")
-  .then(res => res.text())
-  .then(data => {
-    text = data;
+  .then(r => r.text())
+  .then(t => {
+    text = t;
     type();
   });
 
-/* -------- Typewriter -------- */
+/* Typewriter */
 function type() {
-  if (index < text.length) {
-    const char = text[index];
+  if (i < text.length) {
+    const char = text[i];
     typeEl.innerHTML += char;
 
     if (char === "\n") {
-      linesTyped++;
-      moveTree();
+      lines++;
+      scrollBackground();
     }
 
-    index++;
+    i++;
     setTimeout(type, 45);
   } else {
     finish();
   }
 }
 
-/* -------- Tree scroll + zoom -------- */
-function moveTree() {
-  tree.style.top = `${8 + linesTyped * 4}%`;
+/* Scroll background DOWN as lines appear */
+function scrollBackground() {
+  const y = Math.min(80, lines * 6); // clamp so it never goes too far
+  scene.style.backgroundPosition = `center ${y}%`;
 }
 
+/* Zoom OUT at end */
 function finish() {
-  tree.style.transform = "scale(0.85)";
+  scene.style.backgroundSize = "100%";
   btn.classList.add("show");
   btn.classList.remove("hidden");
 }
 
-/* -------- Christmas counter (future proof) -------- */
+/* Christmas counter (future-proof) */
 btn.onclick = () => {
-  const startYear = 2025; // relationship year
+  const startYear = 2025;
   const now = new Date();
   const year = now.getFullYear();
 
   let count = year - startYear;
-
-  const thisYearsChristmas = new Date(year, 11, 25);
-  if (now < thisYearsChristmas) count--;
+  const christmas = new Date(year, 11, 25);
+  if (now < christmas) count--;
 
   if (count < 0) count = 0;
 
