@@ -1,80 +1,66 @@
-const text = `
-My love,
-
-Christmas has always been about warmth.
-Lights in the dark.
-Soft music.
-Quiet moments.
-
-But somehow…
-it feels like it was waiting for you.
-
-Even though we haven't spent a Christmas together yet,
-I already know —
-every future one will feel like home.
-
-Forever yours,
-always.
-`;
-
 const typeEl = document.getElementById("typewriter");
 const tree = document.getElementById("tree");
 const btn = document.getElementById("christmasBtn");
 const result = document.getElementById("christmasResult");
-const scene = document.getElementById("scene");
 
-let i = 0;
-let lineCount = 0;
+let text = "";
+let index = 0;
+let linesTyped = 0;
 
-function typeWriter() {
-  if (i < text.length) {
-    const char = text.charAt(i);
+/* -------- Load letter.txt -------- */
+fetch("letter.txt")
+  .then(res => res.text())
+  .then(data => {
+    text = data;
+    type();
+  });
+
+/* -------- Typewriter -------- */
+function type() {
+  if (index < text.length) {
+    const char = text[index];
     typeEl.innerHTML += char;
 
     if (char === "\n") {
-      lineCount++;
+      linesTyped++;
       moveTree();
     }
 
-    i++;
-    setTimeout(typeWriter, 40);
+    index++;
+    setTimeout(type, 45);
   } else {
-    finishTyping();
+    finish();
   }
 }
 
+/* -------- Tree scroll + zoom -------- */
 function moveTree() {
-  const baseTop = 5;
-  tree.style.top = `${baseTop + lineCount * 6}%`;
+  tree.style.top = `${8 + linesTyped * 4}%`;
 }
 
-function finishTyping() {
+function finish() {
+  tree.style.transform = "scale(0.85)";
   btn.classList.add("show");
   btn.classList.remove("hidden");
-
-  setTimeout(() => {
-    scene.classList.add("cozy");
-  }, 1200);
 }
 
-/* Christmas count logic */
+/* -------- Christmas counter (future proof) -------- */
 btn.onclick = () => {
-  const start = new Date("May 24, 2025");
+  const startYear = 2025; // relationship year
   const now = new Date();
+  const year = now.getFullYear();
 
-  let christmases = now.getFullYear() - start.getFullYear();
+  let count = year - startYear;
 
-  const thisYearsChristmas = new Date(now.getFullYear(), 11, 25);
-  if (now < thisYearsChristmas) christmases--;
+  const thisYearsChristmas = new Date(year, 11, 25);
+  if (now < thisYearsChristmas) count--;
 
-  if (christmases < 0) christmases = 0;
+  if (count < 0) count = 0;
 
   result.innerText =
-    christmases === 0
-      ? "We haven't spent one yet… but I can't wait 🎄"
-      : `We've spent ${christmases} Christmas${christmases > 1 ? "es" : ""} together 🎄`;
+    count === 1
+      ? "We’ve spent 1 Christmas together 🎄"
+      : `We’ve spent ${count} Christmases together 🎄`;
 
   result.style.opacity = 1;
 };
-
-typeWriter();
