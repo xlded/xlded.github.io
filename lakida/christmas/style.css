@@ -1,36 +1,22 @@
 /* --------------------
-   RESET + BASE
+   BASE BODY
 -------------------- */
-* {
-  box-sizing: border-box;
+html, body {
   margin: 0;
   padding: 0;
-}
-
-html, body {
   min-height: 100vh;
   font-family: system-ui, -apple-system, BlinkMacSystemFont;
   color: white;
-  background-color: #000;
   overflow-x: hidden;
-  scroll-behavior: smooth; /* smooth scrolling for dreamy effect */
-}
-
-/* --------------------
-   BACKGROUND LAYER
--------------------- */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -2;
+  scroll-behavior: smooth;
+  
+  /* DIRECT BACKGROUND */
   background: url("background.jpg") center / cover no-repeat;
-  transform: translateZ(0);
 }
 
-/* Mobile background */
+/* MOBILE BACKGROUND */
 @media (max-width: 768px) {
-  body::before {
+  body {
     background: url("background-mobile.jpg") center / cover no-repeat;
   }
 }
@@ -58,19 +44,16 @@ body::after {
 }
 
 /* --------------------
-   PAGE WRAPPER
+   MAIN WRAPPER & TYPEWRITER
 -------------------- */
 .main {
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
   padding: 80px 20px 120px;
-  background: transparent; /* remove black/white background */
+  background: transparent;
 }
 
-/* --------------------
-   TYPEWRITER TEXT
--------------------- */
 #typewriter {
   font-size: 1.05rem;
   line-height: 1.7;
@@ -78,15 +61,13 @@ body::after {
   word-wrap: break-word;
   text-shadow: 0 0 12px rgba(255,255,255,0.15);
   animation: fadeIn 1.5s ease forwards;
-  backdrop-filter: blur(10px);         /* subtle glass effect */
-  background: rgba(255,255,255,0.05);  /* nearly transparent */
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.05);
   border-radius: 12px;
   padding: 10px 14px;
 }
 
-/* --------------------
-   CHRISTMAS BUTTON
--------------------- */
+/* BUTTONS */
 #christmasBtn {
   margin-top: 30px;
   padding: 14px 26px;
@@ -105,9 +86,7 @@ body::after {
   transform: scale(1.05);
 }
 
-/* --------------------
-   COUNTDOWN RESULT
--------------------- */
+/* COUNTDOWN RESULT */
 #christmasResult {
   margin-top: 18px;
   font-size: 0.9rem;
@@ -117,9 +96,7 @@ body::after {
   text-shadow: 0 0 8px rgba(255,255,255,0.2);
 }
 
-/* --------------------
-   ANIMATIONS
--------------------- */
+/* ANIMATIONS */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -131,9 +108,7 @@ body::after {
   }
 }
 
-/* --------------------
-   MOBILE TWEAKS
--------------------- */
+/* MOBILE TWEAKS */
 @media (max-width: 480px) {
   .main {
     padding: 60px 16px 100px;
