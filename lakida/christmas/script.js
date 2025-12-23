@@ -1,67 +1,108 @@
-const scene = document.getElementById("scene");
+/* =========================
+   CONFIG
+========================= */
+const START_DATE = new Date("May 24, 2025");
+const LETTER_FILE = "christmas-letter.txt";
+const BACKGROUND_SCROLL_AMOUNT = 0.3; // px per character typed
+const TYPE_SPEED = 45; // ms per character
+
+/* =========================
+   ELEMENTS
+========================= */
 const typeEl = document.getElementById("typewriter");
 const btn = document.getElementById("christmasBtn");
-const result = document.getElementById("christmasResult");
+const countdownEl = document.getElementById("countdown");
 
-let text = "";
-let i = 0;
-let lines = 0;
+/* =========================
+   INITIAL STATE
+========================= */
+btn.style.opacity = 0;
+btn.style.pointerEvents = "none";
+countdownEl.style.opacity = 0;
 
-/* Load letter */
-fetch("letter.txt")
-  .then(r => r.text())
-  .then(t => {
-    text = t;
-    type();
-  });
+document.body.style.backgroundImage = "url('background.jpg')";
+document.body.style.backgroundRepeat = "no-repeat";
+document.body.style.backgroundSize = "cover";
+document.body.style.backgroundPosition = "center top";
 
-/* Typewriter */
-function type() {
-  if (i < text.length) {
-    const char = text[i];
-    typeEl.innerHTML += char;
+/* =========================
+   TYPEWRITER + BACKGROUND SCROLL
+========================= */
+fetch(LETTER_FILE)
+  .then(res => res.text())
+  .then(text => startTypewriter(text));
 
-    if (char === "\n") {
-      lines++;
-      scrollBackground();
+function startTypewriter(text) {
+  let i = 0;
+  let bgOffset = 0;
+
+  function type() {
+    if (i < text.length) {
+      const char = text[i];
+
+      typeEl.innerHTML += char === "\n" ? "<br>" : char;
+      i++;
+
+      bgOffset += BACKGROUND_SCROLL_AMOUNT;
+      document.body.style.backgroundPosition = `center ${bgOffset}px`;
+
+      setTimeout(type, TYPE_SPEED);
+    } else {
+      revealButton();
     }
-
-    i++;
-    setTimeout(type, 45);
-  } else {
-    finish();
   }
+
+  type();
 }
 
-/* Scroll background DOWN as lines appear */
-function scrollBackground() {
-  const y = Math.min(80, lines * 6); // clamp so it never goes too far
-  scene.style.backgroundPosition = `center ${y}%`;
+/* =========================
+   BUTTON REVEAL
+========================= */
+function revealButton() {
+  btn.style.opacity = 1;
+  btn.style.pointerEvents = "auto";
 }
 
-/* Zoom OUT at end */
-function finish() {
-  scene.style.backgroundSize = "100%";
-  btn.classList.add("show");
-  btn.classList.remove("hidden");
-}
+/* =========================
+   BUTTON CLICK → COUNTDOWN
+========================= */
+btn.addEventListener("click", () => {
+  countdownEl.style.opacity = 1;
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+});
 
-/* Christmas counter (future-proof) */
-btn.onclick = () => {
-  const startYear = 2025;
+/* =========================
+   COUNTDOWN LOGIC
+========================= */
+function updateCountdown() {
   const now = new Date();
-  const year = now.getFullYear();
 
-  let count = year - startYear;
-  const christmas = new Date(year, 11, 25);
-  if (now < christmas) count--;
+  // Next Christmas
+  let nextChristmas = new Date(now.getFullYear(), 11, 25);
+  if (now > nextChristmas) {
+    nextChristmas = new Date(now.getFullYear() + 1, 11, 25);
+  }
 
-  if (count < 0) count = 0;
+  const diff = nextChristmas - now;
 
-  result.innerText =
-    count === 1
-      ? "We’ve spent 1 Christmas together 🎄"
-      : `We’ve spent ${count} Christmases together 🎄`;
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
 
-  result.style.opacity = 1;
-};
+  // Christmases spent together
+  let spent = now.getFullYear() - START_DATE.getFullYear();
+  const thisYearsChristmas = new Date(now.getFullYear(), 11, 25);
+  if (now < thisYearsChristmas) spent--;
+  if (spent < 0) spent = 0;
+
+  countdownEl.innerHTML = `
+    <div style="font-size: 20px; margin-bottom: 6px;">
+      ${days}d ${hours}h ${minutes}m ${seconds}s
+    </div>
+    <div style="font-size: 14px; opacity: 0.85;">
+      We’ve spent ${spent} Christmas${spent === 1 ? "" : "es"} together
+    </div>
+  `;
+}
