@@ -150,3 +150,72 @@ p {
   transform: translateY(-4px) scale(1.02);
   box-shadow: 0 10px 30px rgba(255, 150, 200, 0.4);
 }
+
+/* Overlay background */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 192, 203, 0.15);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+/* Sliding panel */
+.overlay-content {
+  width: 100%;
+  max-width: 900px;
+  height: 85%;
+  background: #ffe6ef;
+  border-radius: 24px 24px 0 0;
+  padding: 20px;
+  animation: slideUp 0.4s ease;
+  overflow-y: auto;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* Header */
+.overlay-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.overlay-header button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Cards */
+.overlay-cards {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.overlay-card {
+  background: white;
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 8px 20px rgba(255, 150, 180, 0.25);
+}
+
+.overlay-card h3 {
+  margin-bottom: 8px;
+}
+
+.overlay-card ul {
+  padding-left: 16px;
+}
