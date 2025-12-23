@@ -15,11 +15,20 @@ async function typeWriterEffect(callback) {
     const res = await fetch(letterFile);
     let text = await res.text();
 
+    // replace line breaks with <br> so formatting is preserved
+    text = text.replace(/\n/g, "<br>");
+
     let i = 0;
     function type() {
       if (i < text.length) {
-        typewriterDiv.innerHTML += text.charAt(i);
-        i++;
+        // append character by character, but treat <br> as one entity
+        if (text.slice(i, i+4) === "<br>") {
+          typewriterDiv.innerHTML += "<br>";
+          i += 4;
+        } else {
+          typewriterDiv.innerHTML += text.charAt(i);
+          i++;
+        }
         // smooth scroll effect
         typewriterDiv.scrollIntoView({behavior: "smooth", block: "nearest"});
         requestAnimationFrame(type);
@@ -34,6 +43,7 @@ async function typeWriterEffect(callback) {
     if (callback) callback();
   }
 }
+
 
 // ---------------------------
 // CALCULATE CHRISTMAS COUNT
