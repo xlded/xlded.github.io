@@ -229,3 +229,64 @@ p {
 .overlay-card a:hover {
   text-decoration: underline;
 }
+
+/* -------------------
+   SMALL PHONE FIX (iPhone mini etc.)
+------------------- */
+@media (max-width: 380px) {
+
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Main blocks */
+  .block {
+    padding: 12px;
+    border-radius: 16px;
+  }
+
+  .block h2 {
+    font-size: 1.1rem;
+  }
+
+  .block p {
+    font-size: 0.9rem;
+  }
+
+  /* Timer block */
+  .block-top {
+    padding: 16px;
+  }
+
+  #timer {
+    font-size: 0.95rem;
+  }
+
+  /* Dashboard spacing */
+  .dashboard-wrapper {
+    padding: 12px;
+  }
+
+  .columns {
+    gap: 12px;
+  }
+
+  /* Overlay fixes */
+  .overlay-content {
+    height: 90%;
+    padding: 14px;
+  }
+
+  .overlay-card {
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .overlay-card h3 {
+    font-size: 1rem;
+  }
+
+  .overlay-card li {
+    font-size: 0.9rem;
+  }
+}
