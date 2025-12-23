@@ -301,11 +301,10 @@ photoOverlay.onclick = e => {
 };
 
 const secretNotes = [
-  "I still get butterflies every time I think about you 💕",
-  "If you shook your phone and found this… hi baby 😘",
-  "You’re my favorite person, even on the hard days.",
-  "I choose you. Over and over.",
-  "This is me hugging you through your screen 🫂"
+  "I'll be here with you no matter how hard and shaky life gets.",
+  "If you shook your phone and found this… hi puppy"
+  "You're really are such a good puppy"
+  "When you find all this I'll make sure to give you extra pets"
 ];
 
 let lastShake = 0;
