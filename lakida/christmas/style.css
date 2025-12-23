@@ -3,16 +3,17 @@
 -------------------- */
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html, body {
-  margin: 0;
-  padding: 0;
   min-height: 100vh;
   font-family: system-ui, -apple-system, BlinkMacSystemFont;
   color: white;
   background-color: #000;
   overflow-x: hidden;
+  scroll-behavior: smooth; /* smooth scrolling for dreamy effect */
 }
 
 /* --------------------
@@ -64,6 +65,7 @@ body::after {
   max-width: 900px;
   margin: 0 auto;
   padding: 80px 20px 120px;
+  background: transparent; /* remove black/white background */
 }
 
 /* --------------------
@@ -76,6 +78,10 @@ body::after {
   word-wrap: break-word;
   text-shadow: 0 0 12px rgba(255,255,255,0.15);
   animation: fadeIn 1.5s ease forwards;
+  backdrop-filter: blur(10px);         /* subtle glass effect */
+  background: rgba(255,255,255,0.05);  /* nearly transparent */
+  border-radius: 12px;
+  padding: 10px 14px;
 }
 
 /* --------------------
