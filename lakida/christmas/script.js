@@ -1,98 +1,73 @@
-/* =========================
+console.log("Christmas script running");
+
+/* --------------------
    CONFIG
-========================= */
-const START_DATE = new Date("May 24, 2025");
-const LETTER_FILE = "christmas-letter.txt";
-const BACKGROUND_SCROLL_AMOUNT = 0.3; // px per character typed
-const TYPE_SPEED = 45; // ms per character
+-------------------- */
+const LETTER_FILE = "christmas-letter.txt?v=" + Date.now();
 
-/* =========================
+/* --------------------
    ELEMENTS
-========================= */
+-------------------- */
 const typeEl = document.getElementById("typewriter");
-const btn = document.getElementById("christmasBtn");
-const countdownEl = document.getElementById("countdown");
+const button = document.getElementById("christmasBtn");
+const result = document.getElementById("christmasResult");
 
-/* =========================
-   INITIAL STATE
-========================= */
-btn.style.opacity = 0;
-btn.style.pointerEvents = "none";
-countdownEl.style.opacity = 0;
-
-document.body.style.backgroundImage = "url('background.jpg')";
-document.body.style.backgroundRepeat = "no-repeat";
-document.body.style.backgroundSize = "cover";
-document.body.style.backgroundPosition = "center top";
-
-/* =========================
-   TYPEWRITER + BACKGROUND SCROLL
-========================= */
-fetch(LETTER_FILE)
-  .then(res => {
-    if (!res.ok) {
-      throw new Error("Failed to load letter file");
-    }
-    return res.text();
-  })
-  .then(text => {
-    console.log("Letter loaded successfully");
-    startTypewriter(text);
-  })
-  .catch(err => {
-    console.error(err);
-    typeEl.innerText =
-      "💔 I couldn't load the Christmas letter.\nCheck the file name and folder location.";
-  });
-
-
+/* --------------------
+   TYPEWRITER
+-------------------- */
 function startTypewriter(text) {
   let i = 0;
-  let bgOffset = 0;
+  typeEl.innerHTML = "";
+  button.style.opacity = 0;
 
   function type() {
     if (i < text.length) {
-      const char = text[i];
-
-      typeEl.innerHTML += char === "\n" ? "<br>" : char;
+      typeEl.innerHTML += text[i] === "\n" ? "<br>" : text[i];
       i++;
-
-      bgOffset += BACKGROUND_SCROLL_AMOUNT;
-      document.body.style.backgroundPosition = `center ${bgOffset}px`;
-
-      setTimeout(type, TYPE_SPEED);
+      window.scrollTo(0, document.body.scrollHeight);
+      setTimeout(type, 40);
     } else {
-      revealButton();
+      button.style.opacity = 1;
     }
   }
 
   type();
 }
 
-/* =========================
-   BUTTON REVEAL
-========================= */
-function revealButton() {
-  btn.style.opacity = 1;
-  btn.style.pointerEvents = "auto";
-}
+/* --------------------
+   LOAD LETTER
+-------------------- */
+fetch(LETTER_FILE)
+  .then(res => {
+    console.log("Fetch status:", res.status);
+    if (!res.ok) throw new Error("Letter file not found");
+    return res.text();
+  })
+  .then(text => {
+    console.log("Letter loaded");
+    startTypewriter(text);
+  })
+  .catch(err => {
+    console.error(err);
+    typeEl.innerText =
+      "❄️ The Christmas letter couldn't load.\nCheck the file name and folder.";
+  });
 
-/* =========================
-   BUTTON CLICK → COUNTDOWN
-========================= */
-btn.addEventListener("click", () => {
-  countdownEl.style.opacity = 1;
+/* --------------------
+   BUTTON CLICK
+-------------------- */
+button.onclick = () => {
+  result.style.opacity = 1;
   updateCountdown();
   setInterval(updateCountdown, 1000);
-});
+};
 
-/* =========================
-   COUNTDOWN LOGIC
-========================= */
+/* --------------------
+   COUNTDOWN + CHRISTMASES
+-------------------- */
 function updateCountdown() {
   const now = new Date();
 
-  // Next Christmas
   let nextChristmas = new Date(now.getFullYear(), 11, 25);
   if (now > nextChristmas) {
     nextChristmas = new Date(now.getFullYear() + 1, 11, 25);
@@ -105,18 +80,13 @@ function updateCountdown() {
   const minutes = Math.floor((diff / (1000 * 60)) % 60);
   const seconds = Math.floor((diff / 1000) % 60);
 
-  // Christmases spent together
-  let spent = now.getFullYear() - START_DATE.getFullYear();
-  const thisYearsChristmas = new Date(now.getFullYear(), 11, 25);
-  if (now < thisYearsChristmas) spent--;
+  const startYear = 2025;
+  let spent = now.getFullYear() - startYear;
+  if (now < new Date(now.getFullYear(), 11, 25)) spent--;
   if (spent < 0) spent = 0;
 
-  countdownEl.innerHTML = `
-    <div style="font-size: 20px; margin-bottom: 6px;">
-      ${days}d ${hours}h ${minutes}m ${seconds}s
-    </div>
-    <div style="font-size: 14px; opacity: 0.85;">
-      We’ve spent ${spent} Christmas${spent === 1 ? "" : "es"} together
-    </div>
+  result.innerHTML = `
+    <div>${days}d ${hours}h ${minutes}m ${seconds}s</div>
+    <div>We’ve spent ${spent} Christmas${spent === 1 ? "" : "es"} together 🎄</div>
   `;
 }
