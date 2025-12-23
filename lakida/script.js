@@ -300,6 +300,51 @@ photoOverlay.onclick = e => {
   }
 };
 
+const secretNotes = [
+  "I still get butterflies every time I think about you 💕",
+  "If you shook your phone and found this… hi baby 😘",
+  "You’re my favorite person, even on the hard days.",
+  "I choose you. Over and over.",
+  "This is me hugging you through your screen 🫂"
+];
+
+let lastShake = 0;
+
+window.addEventListener("devicemotion", event => {
+  const acc = event.accelerationIncludingGravity;
+  if (!acc) return;
+
+  const strength =
+    Math.abs(acc.x) +
+    Math.abs(acc.y) +
+    Math.abs(acc.z);
+
+  const now = Date.now();
+
+  if (strength > 30 && now - lastShake > 5000) {
+    lastShake = now;
+    showShakeNote();
+  }
+});
+
+function showShakeNote() {
+  const note = document.getElementById("shakeNote");
+  const msg = secretNotes[Math.floor(Math.random() * secretNotes.length)];
+
+  note.innerText = msg;
+  note.classList.remove("hidden");
+
+  setTimeout(() => {
+    note.classList.add("hidden");
+  }, 4000);
+}
+
+document.body.addEventListener("click", () => {
+  if (typeof DeviceMotionEvent?.requestPermission === "function") {
+    DeviceMotionEvent.requestPermission();
+  }
+}, { once: true });
+
 
 updateTimer();
 setInterval(updateTimer, 1000);
