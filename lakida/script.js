@@ -227,78 +227,75 @@ const batchSize = 8;
 const photoOverlay = document.getElementById("photoOverlay");
 const photoGrid = document.getElementById("photoGrid");
 
-/* -------- Load photos.txt -------- */
+const photoCard = document.getElementById("photoCard");
+const photoPopup = document.getElementById("photoPopup");
+const photoGrid = document.getElementById("photoGrid");
+const zoomOverlay = document.getElementById("zoomOverlay");
+const zoomedPhoto = document.getElementById("zoomedPhoto");
+
+let photos = [];
+let loadedIndex = 0;
+const batchSize = 8; // number of images to load at a time
+
+// Fetch and prepare photo list
 async function loadPhotos() {
-  const res = await fetch("photos.txt");
-  const text = await res.text();
-
-  photoList = text
-    .split(";")
-    .map(l => l.trim())
-    .filter(Boolean);
-
-  shuffle(photoList);
-  photoIndex = 0;
-  photoGrid.innerHTML = "";
-  loadMorePhotos();
-}
-
-/* -------- Shuffle -------- */
-function shuffle(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
+  try {
+    const res = await fetch("photos.txt");
+    const text = await res.text();
+    photos = text.split(";").map(s => s.trim()).filter(Boolean);
+    photos = photos.sort(() => Math.random() - 0.5); // randomize order
+  } catch (err) {
+    console.error("Failed to load photos", err);
   }
 }
 
-/* -------- Lazy batch loader -------- */
-function loadMorePhotos() {
-  for (let i = 0; i < batchSize && photoIndex < photoList.length; i++) {
+// Load next batch of images into the grid
+function loadNextBatch() {
+  if (loadedIndex >= photos.length) return; // all loaded
+  const end = Math.min(loadedIndex + batchSize, photos.length);
+  for (let i = loadedIndex; i < end; i++) {
     const img = document.createElement("img");
-    img.loading = "lazy";
-    img.src = photoList[photoIndex++];
-
-    img.onclick = () => openViewer(img.src);
-
+    img.src = photos[i];
+    img.addEventListener("click", () => openZoom(img.src));
     photoGrid.appendChild(img);
   }
+  loadedIndex = end;
 }
 
-const photoViewer = document.getElementById("photoViewer");
-const viewerImg = document.getElementById("viewerImg");
-
-function openViewer(src) {
-  viewerImg.src = src;
-  photoViewer.classList.remove("hidden");
-}
-
-photoViewer.onclick = () => {
-  photoViewer.classList.add("hidden");
-  viewerImg.src = "";
-};
-
-
-/* -------- Infinite scroll -------- */
-photoOverlay.addEventListener("scroll", () => {
-  if (
-    photoOverlay.scrollTop + photoOverlay.clientHeight >=
-    photoOverlay.scrollHeight - 200
-  ) {
-    loadMorePhotos();
+// Scroll listener to load more
+photoPopup.addEventListener("scroll", () => {
+  if (photoPopup.scrollTop + photoPopup.clientHeight >= photoPopup.scrollHeight - 200) {
+    loadNextBatch();
   }
 });
 
-/* -------- Open / Close -------- */
-document.querySelector('[data-function="photos"]').onclick = () => {
-  photoOverlay.classList.remove("hidden");
-  loadPhotos();
-};
+// Open zoom overlay
+function openZoom(src) {
+  zoomedPhoto.src = src;
+  zoomOverlay.style.display = "flex";
+}
 
-photoOverlay.onclick = e => {
-  if (e.target === photoOverlay) {
-    photoOverlay.classList.add("hidden");
+// Close zoom on click
+zoomOverlay.addEventListener("click", () => {
+  zoomOverlay.style.display = "none";
+  zoomedPhoto.src = "";
+});
+
+// Open popup
+photoCard.addEventListener("click", async () => {
+  await loadPhotos();
+  photoGrid.innerHTML = "";
+  loadedIndex = 0;
+  loadNextBatch();
+  photoPopup.style.display = "block";
+});
+
+// Close popup when clicking outside grid
+photoPopup.addEventListener("click", (e) => {
+  if (e.target === photoPopup) {
+    photoPopup.style.display = "none";
   }
-};
+});
 
 
 updateTimer();

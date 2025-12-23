@@ -402,6 +402,63 @@ html, body {
 }
 
 
+/* Popup overlay */
+.popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(10px);
+  display: none; /* hidden by default */
+  overflow-y: auto;
+  z-index: 1000;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+/* Popup content */
+.popupContent {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Pinterest-style grid */
+#photoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+/* Images */
+#photoGrid img {
+  width: 100%;
+  border-radius: 12px;
+  cursor: pointer;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+#photoGrid img:hover {
+  transform: scale(1.05);
+}
+
+/* Fullscreen Zoom */
+.zoomOverlay {
+  position: fixed;
+  top:0; left:0; width:100%; height:100%;
+  background: rgba(0,0,0,0); /* clear background */
+  backdrop-filter: blur(12px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+.zoomOverlay img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 12px;
+}
+
+
 /* ---------- Masonry Layout ---------- */
 .masonry {
   column-count: 2;
