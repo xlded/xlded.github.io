@@ -401,42 +401,6 @@ html, body {
   }
 }
 
-.shake-note {
-  position: fixed;
-  bottom: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 14px 20px;
-
-  background: rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-
-  border-radius: 18px;
-  font-size: 15px;
-  color: white;
-  text-align: center;
-
-  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-  animation: fadeUp 0.4s ease;
-  z-index: 2000;
-}
-
-.shake-note.hidden {
-  display: none;
-}
-
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translate(-50%, 20px);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-}
-
 
 /* ---------- Masonry Layout ---------- */
 .masonry {

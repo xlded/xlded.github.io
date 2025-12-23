@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const events = [
     { name: "💖 Our Anniversary 💖", path: "/anniversary", date: new Date(year, 4, 24) },
-    { name: "Christmas🎄", path: "/lakida/christmas", date: new Date(year, 11, 25) },
+    { name: "Christmas🎄", path: "/christmas", date: new Date(year, 11, 25) },
     { name: "Halloween🎃", path: "/halloween", date: new Date(year, 9, 31) },
     { name: "Thanksgiving🦃", path: "/thanksgiving", date: thanksgivingDate(year) },
     { name: "Valentines day💝", path: "/valentinesday", date: new Date(year, 1, 14) },
@@ -299,50 +299,6 @@ photoOverlay.onclick = e => {
     photoOverlay.classList.add("hidden");
   }
 };
-
-const secretNotes = [
-  "I'll be here with you no matter how hard and shaky life gets.",
-  "If you shook your phone and found this… hi puppy"
-  "You're really are such a good puppy"
-  "When you find all this I'll make sure to give you extra pets"
-];
-
-let lastShake = 0;
-
-window.addEventListener("devicemotion", event => {
-  const acc = event.accelerationIncludingGravity;
-  if (!acc) return;
-
-  const strength =
-    Math.abs(acc.x) +
-    Math.abs(acc.y) +
-    Math.abs(acc.z);
-
-  const now = Date.now();
-
-  if (strength > 30 && now - lastShake > 5000) {
-    lastShake = now;
-    showShakeNote();
-  }
-});
-
-function showShakeNote() {
-  const note = document.getElementById("shakeNote");
-  const msg = secretNotes[Math.floor(Math.random() * secretNotes.length)];
-
-  note.innerText = msg;
-  note.classList.remove("hidden");
-
-  setTimeout(() => {
-    note.classList.add("hidden");
-  }, 4000);
-}
-
-document.body.addEventListener("click", () => {
-  if (typeof DeviceMotionEvent?.requestPermission === "function") {
-    DeviceMotionEvent.requestPermission();
-  }
-}, { once: true });
 
 
 updateTimer();
