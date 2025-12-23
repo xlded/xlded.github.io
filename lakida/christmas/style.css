@@ -44,28 +44,36 @@ body::after {
 }
 
 /* --------------------
-   MAIN WRAPPER & TYPEWRITER
+   PAGE WRAPPER & TYPEWRITER
 -------------------- */
 .main {
-  width: 100%;
+  position: relative;        /* allows left/right positioning if needed */
   max-width: 900px;
   margin: 0 auto;
   padding: 80px 20px 120px;
   background: transparent;
+  display: flex;
+  justify-content: flex-start;  /* align items to left */
+  flex-direction: column;       /* stack elements vertically */
 }
 
+/* TYPEWRITER BOX */
 #typewriter {
+  max-width: 450px;               /* keeps it a cozy letter width */
+  width: 90%;                      /* responsive on smaller screens */
   font-size: 1.05rem;
   line-height: 1.7;
   white-space: normal;
   word-wrap: break-word;
   text-shadow: 0 0 12px rgba(255,255,255,0.15);
   animation: fadeIn 1.5s ease forwards;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);     /* dreamy glass effect */
   background: rgba(255,255,255,0.05);
   border-radius: 12px;
   padding: 10px 14px;
+  box-sizing: border-box;
 }
+
 
 /* BUTTONS */
 #christmasBtn {
@@ -109,6 +117,15 @@ body::after {
 }
 
 /* MOBILE TWEAKS */
+
+@media (max-width: 480px) {
+  #typewriter {
+    max-width: 100%;          /* fills smaller screens nicely */
+    font-size: 0.95rem;
+  }
+}
+
+
 @media (max-width: 480px) {
   .main {
     padding: 60px 16px 100px;
