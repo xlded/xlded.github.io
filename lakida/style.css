@@ -219,3 +219,13 @@ p {
 .overlay-card ul {
   padding-left: 16px;
 }
+
+.overlay-card a {
+  text-decoration: none;
+  color: #ff5fa2;
+  font-weight: 500;
+}
+
+.overlay-card a:hover {
+  text-decoration: underline;
+}
