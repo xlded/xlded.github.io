@@ -291,23 +291,38 @@ p {
   }
 }
 
-/* -------------------
-   NON-MAX IPHONE FIX
-   (iPhone / iPhone Pro)
-------------------- */
-@media (min-width: 381px) and (max-width: 420px) {
+/* ---------------------------------
+   ALL NON-MAX IPHONES (COMPRESSED)
+---------------------------------- */
+@media (max-width: 414px) {
 
-  /* Slight compression */
-  .block {
-    padding: 14px;
+  /* Center everything tighter */
+  .dashboard {
+    padding: 12px;
   }
 
-  .columns {
+  /* Stack blocks like mini */
+  .blocks-row {
+    flex-direction: column;
     gap: 12px;
   }
 
-  /* Hide 4th block ONLY */
-  .block:nth-of-type(4) {
-    display: none;
+  /* Make blocks slightly smaller */
+  .block {
+    width: 100%;
+    max-width: 340px;
+    padding: 14px;
+    font-size: 0.95rem;
   }
+
+  /* Time block stays dominant but slimmer */
+  .time-block {
+    max-width: 360px;
+    padding: 18px;
+  }
+}
+
+html, body {
+  height: 100%;
+  overflow-x: hidden;
 }
