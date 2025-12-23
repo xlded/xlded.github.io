@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const events = [
     { name: "💖 Our Anniversary 💖", path: "/anniversary", date: new Date(year, 4, 24) },
-    { name: "Christmas🎄", path: "/christmas", date: new Date(year, 11, 25) },
+    { name: "Christmas🎄", path: "/lakida/christmas", date: new Date(year, 11, 25) },
     { name: "Halloween🎃", path: "/halloween", date: new Date(year, 9, 31) },
     { name: "Thanksgiving🦃", path: "/thanksgiving", date: thanksgivingDate(year) },
     { name: "Valentines day💝", path: "/valentinesday", date: new Date(year, 1, 14) },

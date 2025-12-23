@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Christmas with Lakida 💖</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Christmas With You 🎄</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Dashboard Card -->
-  <div class="dashboard">
-    <div class="card">
-      <h1>🎄 Christmas with Lakida 💖</h1>
-      <div class="timer" id="timer">Loading love…</div>
-      <button id="musicBtn">🔊 Play Music</button>
-    </div>
-  </div>
 
-  <!-- Optional Music -->
-  <audio id="music" loop>
-    <source src="music.mp3" type="audio/mpeg">
-  </audio>
+  <div class="scene" id="scene">
+    <div class="letter-container">
+      <pre id="typewriter"></pre>
+
+      <button id="christmasBtn" class="hidden">
+        How many Christmases together? 🎄
+      </button>
+
+      <div id="christmasResult"></div>
+    </div>
+
+    <div id="tree">🎄</div>
+  </div>
 
   <script src="script.js"></script>
 </body>

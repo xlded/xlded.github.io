@@ -1,85 +1,80 @@
-const emojis = ["🎄", "❄️", "🎁"];
+const text = `
+My love,
 
-/* -------------------
-   Snow Pile Setup
-------------------- */
-const snowPile = document.createElement("div");
-snowPile.id = "snowPile";
-document.body.appendChild(snowPile);
-let snowHeight = 0;
+Christmas has always been about warmth.
+Lights in the dark.
+Soft music.
+Quiet moments.
 
-/* -------------------
-   Falling Emojis with Spin
-------------------- */
-function createEmoji() {
-  const emoji = document.createElement("div");
-  emoji.classList.add("emoji");
-  emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+But somehow…
+it feels like it was waiting for you.
 
-  emoji.style.left = Math.random() * (window.innerWidth - 30) + "px";
-  emoji.style.fontSize = 18 + Math.random() * 14 + "px";
+Even though we haven't spent a Christmas together yet,
+I already know —
+every future one will feel like home.
 
-  const angle = Math.random() * 360;
-  emoji.style.transform = `rotate(${angle}deg)`;
-  const spinDuration = 15 + Math.random() * 20;
-  emoji.style.animation = `fall ${8 + Math.random() * 6}s linear, spin ${spinDuration}s linear infinite`;
+Forever yours,
+always.
+`;
 
-  emoji.addEventListener("animationend", () => {
-    if (emoji.innerText === "❄️") pileSnow();
-  });
+const typeEl = document.getElementById("typewriter");
+const tree = document.getElementById("tree");
+const btn = document.getElementById("christmasBtn");
+const result = document.getElementById("christmasResult");
+const scene = document.getElementById("scene");
 
-  document.body.appendChild(emoji);
-  setTimeout(() => emoji.remove(), 15000);
-}
+let i = 0;
+let lineCount = 0;
 
-setInterval(createEmoji, 500);
+function typeWriter() {
+  if (i < text.length) {
+    const char = text.charAt(i);
+    typeEl.innerHTML += char;
 
-function pileSnow() {
-  if (snowHeight < 120) {
-    snowHeight += 2;
-    snowPile.style.height = snowHeight + "px";
-  }
-}
+    if (char === "\n") {
+      lineCount++;
+      moveTree();
+    }
 
-/* -------------------
-   Timer
-------------------- */
-const startDate = new Date("May 24, 2025 00:00:00");
-
-function updateTimer() {
-  const now = new Date();
-  let diff = now - startDate;
-
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  diff %= (1000 * 60 * 60 * 24);
-
-  const hours = Math.floor(diff / (1000 * 60 * 60));
-  diff %= (1000 * 60 * 60);
-
-  const minutes = Math.floor(diff / (1000 * 60));
-  diff %= (1000 * 60);
-
-  const seconds = Math.floor(diff / 1000);
-
-  document.getElementById("timer").innerText =
-    `Together for ${days} days, ${hours}h ${minutes}m ${seconds}s 💕`;
-}
-
-setInterval(updateTimer, 1000);
-updateTimer();
-
-/* -------------------
-   Music Button
-------------------- */
-const music = document.getElementById("music");
-const musicBtn = document.getElementById("musicBtn");
-
-musicBtn.addEventListener("click", () => {
-  if (music.paused) {
-    music.play();
-    musicBtn.innerText = "🔇 Mute Music";
+    i++;
+    setTimeout(typeWriter, 40);
   } else {
-    music.pause();
-    musicBtn.innerText = "🔊 Play Music";
+    finishTyping();
   }
-});
+}
+
+function moveTree() {
+  const baseTop = 5;
+  tree.style.top = `${baseTop + lineCount * 6}%`;
+}
+
+function finishTyping() {
+  btn.classList.add("show");
+  btn.classList.remove("hidden");
+
+  setTimeout(() => {
+    scene.classList.add("cozy");
+  }, 1200);
+}
+
+/* Christmas count logic */
+btn.onclick = () => {
+  const start = new Date("May 24, 2025");
+  const now = new Date();
+
+  let christmases = now.getFullYear() - start.getFullYear();
+
+  const thisYearsChristmas = new Date(now.getFullYear(), 11, 25);
+  if (now < thisYearsChristmas) christmases--;
+
+  if (christmases < 0) christmases = 0;
+
+  result.innerText =
+    christmases === 0
+      ? "We haven't spent one yet… but I can't wait 🎄"
+      : `We've spent ${christmases} Christmas${christmases > 1 ? "es" : ""} together 🎄`;
+
+  result.style.opacity = 1;
+};
+
+typeWriter();
