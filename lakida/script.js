@@ -227,15 +227,31 @@ const batchSize = 8;
 const photoOverlay = document.getElementById("photoOverlay");
 const photoGrid = document.getElementById("photoGrid");
 
-/* -------- Load photos.txt -------- */
+/* =========================================================
+    PHOTO GALLERY (UPDATED — batch size now 20 per load)
+=========================================================*/
+
+const favoritesBlock = document.querySelector('[data-function="favorites"]');
+const overlay = document.getElementById("favoritesOverlay");
+const closeBtn = document.getElementById("closeOverlay");
+
+if (favoritesBlock && overlay && closeBtn) {
+  favoritesBlock.onclick = () => { overlay.classList.remove("hidden"); document.body.style.overflow="hidden"; }
+  closeBtn.onclick = () => { overlay.classList.add("hidden"); document.body.style.overflow=""; }
+}
+
+let photoList = [];
+let photoIndex = 0;
+const batchSize = 20; // ← YOU WANTED THIS
+
+const photoOverlay = document.getElementById("photoOverlay");
+const photoGrid = document.getElementById("photoGrid");
+
 async function loadPhotos() {
   const res = await fetch("photos.txt");
   const text = await res.text();
 
-  photoList = text
-    .split(";")
-    .map(l => l.trim())
-    .filter(Boolean);
+  photoList = text.split(";").map(l => l.trim()).filter(Boolean);
 
   shuffle(photoList);
   photoIndex = 0;
@@ -243,7 +259,6 @@ async function loadPhotos() {
   loadMorePhotos();
 }
 
-/* -------- Shuffle -------- */
 function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -251,15 +266,12 @@ function shuffle(arr) {
   }
 }
 
-/* -------- Lazy batch loader -------- */
 function loadMorePhotos() {
   for (let i = 0; i < batchSize && photoIndex < photoList.length; i++) {
     const img = document.createElement("img");
     img.loading = "lazy";
     img.src = photoList[photoIndex++];
-
     img.onclick = () => openViewer(img.src);
-
     photoGrid.appendChild(img);
   }
 }
@@ -271,34 +283,31 @@ function openViewer(src) {
   viewerImg.src = src;
   photoViewer.classList.remove("hidden");
 }
+photoViewer.onclick = () => { photoViewer.classList.add("hidden"); viewerImg.src=""; };
 
-photoViewer.onclick = () => {
-  photoViewer.classList.add("hidden");
-  viewerImg.src = "";
-};
-
-
-/* -------- Infinite scroll -------- */
+// infinite scroll detection
 photoOverlay.addEventListener("scroll", () => {
-  if (
-    photoOverlay.scrollTop + photoOverlay.clientHeight >=
-    photoOverlay.scrollHeight - 200
-  ) {
+  if (photoOverlay.scrollTop + photoOverlay.clientHeight >= photoOverlay.scrollHeight - 200)
     loadMorePhotos();
-  }
 });
 
-/* -------- Open / Close -------- */
 document.querySelector('[data-function="photos"]').onclick = () => {
   photoOverlay.classList.remove("hidden");
   loadPhotos();
 };
 
-photoOverlay.onclick = e => {
-  if (e.target === photoOverlay) {
-    photoOverlay.classList.add("hidden");
-  }
-};
+photoOverlay.onclick = e => { if (e.target === photoOverlay) photoOverlay.classList.add("hidden"); };
+
+updateTimer();
+setInterval(updateTimer, 1000);
+
+
+document.querySelectorAll(".block").forEach(block => {
+  block.addEventListener("click", () => {
+    block.style.transform = "scale(0.97)";
+    setTimeout(() => { block.style.transform=""; },150);
+  });
+});
 
 
 updateTimer();
