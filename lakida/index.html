@@ -7,113 +7,126 @@
   <link rel="stylesheet" href="style.css?v=1">
 </head>
 
+<!-- If you’re reading this, I loved her more than I knew how to explain.  -->
+
+<!-- The goal when making this was so no matter what my love has a forever spot on this planet  -->
+<!-- I know I'm gonna die someday likely sooner rather then later but I want her to always have a place that shows all my love for her  -->
+<!-- If you're reading this and want to make something like it feel free to pull anything and everything from my code love isn't limited you should use any method you can to show it and making a website makes it last damn near forever  -->
+
+
+<!-- A Personal note to lakida my true love.  -->
+<!-- I love you lakida, more then anything and everything.  -->
+<!-- You've showed me how to love and how to feel, you've changed so much about me without even trying  -->
+<!-- We've had so many fights and I KNOW we'll have more during our time living but even in our worst moments I've never not loved you -->
+<!-- It's insane how pretty you are, It's hard to believe you think I have wondering eyes when all I can do is stare at you. -->
+
 <body>
 
+  <!-- Dashboard -->
   <main class="dashboard">
 
+    <!-- Top wide block -->
     <section class="block block-wide" data-function="time">
       <h2>💗 Lakida & Alex's lounge</h2>
       <p id="timer">Loading…</p>
     </section>
 
+    <!-- Bottom blocks -->
     <section class="blocks-grid">
 	
-      <div class="block seasonal-block" id="seasonBlock">
-	    <h2 id="seasonText">Loading…</h2>
-	  </div>
 
-      <!-- PHOTO BLOCK -->
-      <div class="block" data-function="photos">
-        <h3>Photos 📸</h3>
-        <p>Our memories together</p>
+	<div class="block seasonal-block" id="seasonBlock">
+	<h2 id="seasonText">Loading…</h2>
+	</div>
+
+
+<!-- PHOTO BLOCK -->
+<div class="block" data-function="photos">
+  <h3>Photos 📸</h3>
+  <p>Our memories together</p>
+</div>
+
+<!-- PHOTO POPUP -->
+<div id="photoOverlay" class="overlay hidden">
+  <div class="slide-panel">
+    <div id="photoGrid" class="masonry"></div>
+  </div>
+</div>
+
+<div id="photoViewer" class="photo-viewer hidden">
+  <img id="viewerImg" />
+</div>
+
+
+<div class="block" data-function="favorites">
+  <h2>Our Favorites 💕</h2>
+  <p>Places, food & memories</p>
+</div>
+
+
+<div class="block" data-function="love-letter" id="loveLetterBlock">
+  <h2>Love Letter 💌</h2>
+  <p id="loveLetterText">Loading…</p>
+</div>
+
+<!-- Favorites Overlay -->
+<div id="favoritesOverlay" class="overlay hidden">
+  <div class="overlay-content">
+
+    <div class="overlay-header">
+      <h2>Our Favorites 💕</h2>
+      <button id="closeOverlay">✕</button>
+    </div>
+
+    <div class="overlay-cards">
+
+      <div class="overlay-card">
+        <h3>🍽 Restaurants</h3>
+        <ul>
+          <li>Toshis Ramen</li>
+          <li>Dos Hermanos Taqueria</li>
+		  <li>Dominos.. (she doesn't like pizza)</li>
+		  <li>Panda Express</li>
+		  <li>Oba Ramen</li>
+        </ul>
       </div>
 
-      <!-- PHOTO POPUP -->
-      <div id="photoOverlay" class="overlay hidden">
-        <div class="slide-panel">
-          
-          <!-- Your gallery will fill here -->
-          <div id="photoGrid" class="masonry"></div>
-
-          <!-- ⬇ ADDED — makes infinite scroll smooth & safe -->
-          <div id="photoLoadSpace" style="height:120px;"></div>
-          <!-- (Just an empty bottom buffer. No visuals.) -->
-
-        </div>
+      <div class="overlay-card">
+        <h3>📍 Places to Go & Activities</h3>
+        <ul>
+		<li>McGowan Creek Lookout</li>
+          <li>The Coast</li>
+          <li>Movie Theaters</li>
+		  <li>Valley River Center</li>
+		  <li>Onsen Hourly Hot Tub & Sauna</li>
+        </ul>
       </div>
 
-      <div id="photoViewer" class="photo-viewer hidden">
-        <img id="viewerImg" />
+      <div class="overlay-card">
+        <h3>🧋 Drinks</h3>
+        <ul>
+          <li>Horchatta!</li>
+		  <li>Cramel Frappuccino</li>
+          <li>Jarritos Pineapple Soda</li>
+		  <li>S'mores Frappuccino</li>
+        </ul>
       </div>
 
-
-      <div class="block" data-function="favorites">
-        <h2>Our Favorites 💕</h2>
-        <p>Places, food & memories</p>
+      <div class="overlay-card">
+        <h3>🍰 Food</h3>
+        <ul>
+          <li>Starberries</li>
+		  <li>flan</li>
+		  <li>Cheese Cake</li>
+		  <li>Ferrero Rocher (Specifically Raffaello)</li>
+          <li>Watermelon</li>
+        </ul>
       </div>
 
-      <div class="block" data-function="love-letter" id="loveLetterBlock">
-        <h2>Love Letter 💌</h2>
-        <p id="loveLetterText">Loading…</p>
-      </div>
+    </div>
+  </div>
+</div>
 
-      <!-- Favorites Overlay -->
-      <div id="favoritesOverlay" class="overlay hidden">
-        <div class="overlay-content">
-
-          <div class="overlay-header">
-            <h2>Our Favorites 💕</h2>
-            <button id="closeOverlay">✕</button>
-          </div>
-
-          <div class="overlay-cards">
-
-            <div class="overlay-card">
-              <h3>🍽 Restaurants</h3>
-              <ul>
-                <li>Toshis Ramen</li>
-                <li>Dos Hermanos Taqueria</li>
-                <li>Dominos.. (she doesn't like pizza)</li>
-                <li>Panda Express</li>
-                <li>Oba Ramen</li>
-              </ul>
-            </div>
-
-            <div class="overlay-card">
-              <h3>📍 Places to Go & Activities</h3>
-              <ul>
-                <li>McGowan Creek Lookout</li>
-                <li>The Coast</li>
-                <li>Movie Theaters</li>
-                <li>Valley River Center</li>
-                <li>Onsen Hourly Hot Tub & Sauna</li>
-              </ul>
-            </div>
-
-            <div class="overlay-card">
-              <h3>🧋 Drinks</h3>
-              <ul>
-                <li>Horchatta!</li>
-                <li>Cramel Frappuccino</li>
-                <li>Jarritos Pineapple Soda</li>
-                <li>S'mores Frappuccino</li>
-              </ul>
-            </div>
-
-            <div class="overlay-card">
-              <h3>🍰 Food</h3>
-              <ul>
-                <li>Starberries</li>
-                <li>flan</li>
-                <li>Cheese Cake</li>
-                <li>Ferrero Rocher (Specifically Raffaello)</li>
-                <li>Watermelon</li>
-              </ul>
-            </div>
-
-          </div>
-        </div>
-      </div>
 
     </section>
 
