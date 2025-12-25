@@ -1,10 +1,11 @@
 /* -------------------
-   SEASONAL BUTTON (TRUE CLOSEST HOLIDAY)
+   SEASONAL BUTTON (NEXT UPCOMING HOLIDAY + COUNTDOWN)
 ------------------- */
 document.addEventListener("DOMContentLoaded", () => {
   const seasonBlock = document.getElementById("seasonBlock");
   const seasonText = document.getElementById("seasonText");
-  if (!seasonBlock || !seasonText) return;
+  const seasonCountdown = document.getElementById("seasonCountdown");
+  if (!seasonBlock || !seasonText || !seasonCountdown) return;
 
   const now = new Date();
   const year = now.getFullYear();
@@ -28,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return new Date(y, 10, 1 + offset + 21);
   }
 
-  const events = [
+  const eventsBase = [
     { name: "💖 Our Anniversary 💖", path: "/anniversary", date: new Date(year, 4, 24) },
     { name: "Christmas🎄", path: "/lakida/christmas", date: new Date(year, 11, 25) },
     { name: "Halloween🎃", path: "/halloween", date: new Date(year, 9, 31) },
@@ -40,19 +41,40 @@ document.addEventListener("DOMContentLoaded", () => {
     { name: "National boyfriend day💘", path: "/nationalboyfriendday", date: new Date(year, 9, 3) }
   ];
 
-  // normalize dates around now
-  events.forEach(e => {
-    if (Math.abs(e.date - now) > 183 * 24 * 60 * 60 * 1000) {
-      e.date.setFullYear(e.date.getFullYear() + (e.date < now ? 1 : -1));
-    }
+  // Build a list of next-upcoming dates (if passed, push to next year)
+  const upcoming = eventsBase.map(e => {
+    const d = new Date(e.date);
+    if (d <= new Date()) d.setFullYear(d.getFullYear() + 1);
+    return { ...e, date: d };
   });
 
-  const closest = events.reduce((a, b) =>
-    Math.abs(b.date - now) < Math.abs(a.date - now) ? b : a
-  );
+  // Pick the soonest upcoming
+  let nextEvent = upcoming.reduce((a, b) => (b.date - new Date() < a.date - new Date() ? b : a));
 
-  seasonText.textContent = closest.name;
+  // Set label + click
+  seasonText.textContent = nextEvent.name;
   seasonBlock.onclick = () => {
-    window.location.href = closest.path;
+    window.location.href = nextEvent.path;
   };
+
+  function formatCountdown(ms) {
+    if (ms < 0) ms = 0;
+
+    const totalSeconds = Math.floor(ms / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    // Keep it compact
+    return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }
+
+  function tick() {
+    const diff = nextEvent.date - new Date();
+    seasonCountdown.textContent = `${formatCountdown(diff)} until ${nextEvent.name}`;
+  }
+
+  tick();
+  setInterval(tick, 1000);
 });

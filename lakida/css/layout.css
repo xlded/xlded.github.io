@@ -172,3 +172,9 @@
     padding: 18px;
   }
 }
+
+#seasonCountdown {
+  margin-top: 12px;
+  color: #666;
+  font-size: 0.95rem;
+}
