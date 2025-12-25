@@ -1,6 +1,9 @@
-export const mainEmojis = ["🌹", "❤️"];
+/* -------------------
+   FALLING EMOJIS (MAIN DASHBOARD)
+------------------- */
+const mainEmojis = ["🌹", "❤️"];
 
-export function createMainEmoji() {
+function createMainEmoji() {
   const emoji = document.createElement("div");
   emoji.classList.add("emoji");
   emoji.innerText = mainEmojis[Math.floor(Math.random() * mainEmojis.length)];
@@ -9,8 +12,8 @@ export function createMainEmoji() {
   emoji.style.fontSize = 18 + Math.random() * 14 + "px";
 
   const angle = Math.random() * 360;
-  const spinDuration = 25 + Math.random() * 20;
-  const fallDuration = 16 + Math.random() * 10;
+  const spinDuration = 25 + Math.random() * 20;   // slower spin
+  const fallDuration = 16 + Math.random() * 10;   // MUCH longer fall
 
   emoji.style.transform = `rotate(${angle}deg)`;
   emoji.style.animation = `
@@ -19,6 +22,7 @@ export function createMainEmoji() {
   `;
 
   document.body.appendChild(emoji);
+
   setTimeout(() => emoji.remove(), fallDuration * 1000 + 2000);
 }
 

@@ -1,3 +1,6 @@
+/* -------------------
+   SEASONAL BUTTON (TRUE CLOSEST HOLIDAY)
+------------------- */
 document.addEventListener("DOMContentLoaded", () => {
   const seasonBlock = document.getElementById("seasonBlock");
   const seasonText = document.getElementById("seasonText");
@@ -37,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
     { name: "National boyfriend day💘", path: "/nationalboyfriendday", date: new Date(year, 9, 3) }
   ];
 
+  // normalize dates around now
   events.forEach(e => {
     if (Math.abs(e.date - now) > 183 * 24 * 60 * 60 * 1000) {
       e.date.setFullYear(e.date.getFullYear() + (e.date < now ? 1 : -1));
@@ -48,5 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   seasonText.textContent = closest.name;
-  seasonBlock.onclick = () => window.location.href = closest.path;
+  seasonBlock.onclick = () => {
+    window.location.href = closest.path;
+  };
 });

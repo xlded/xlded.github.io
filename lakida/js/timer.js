@@ -1,6 +1,9 @@
+/* -------------------
+   COUNT-UP TIMER
+------------------- */
 const startDate = new Date("May 24, 2025 00:00:00");
 
-export function updateTimer() {
+function updateTimer() {
   const now = new Date();
   let diff = now - startDate;
 
@@ -15,7 +18,10 @@ export function updateTimer() {
 
   const seconds = Math.floor(diff / 1000);
 
-  document.getElementById("timer").innerText =
+  const timerEl = document.getElementById("timer");
+  if (!timerEl) return;
+
+  timerEl.innerText =
     `Together for ${days} days, ${hours}h ${minutes}m ${seconds}s 💕`;
 }
 

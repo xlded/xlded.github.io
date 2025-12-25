@@ -1,3 +1,6 @@
+/* -------------------
+   FAVORITES OVERLAY
+------------------- */
 const favoritesBlock = document.querySelector('[data-function="favorites"]');
 const overlay = document.getElementById("favoritesOverlay");
 const closeBtn = document.getElementById("closeOverlay");

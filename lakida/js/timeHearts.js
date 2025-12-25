@@ -1,6 +1,9 @@
+/* -------------------
+   SPARKLING HEARTS IN TIME BLOCK
+------------------- */
 const timeBlock = document.querySelector('[data-function="time"]');
 
-export function createTopHeart() {
+function createTopHeart() {
   if (!timeBlock) return;
 
   const heart = document.createElement("div");
@@ -8,6 +11,7 @@ export function createTopHeart() {
   heart.innerText = "💖";
 
   const rect = timeBlock.getBoundingClientRect();
+
   heart.style.left = rect.left + Math.random() * rect.width + "px";
   heart.style.top = rect.top + Math.random() * rect.height + "px";
   heart.style.fontSize = 16 + Math.random() * 10 + "px";
@@ -19,6 +23,7 @@ export function createTopHeart() {
   heart.style.animation = `spin ${spinDuration}s linear infinite`;
 
   document.body.appendChild(heart);
+
   setTimeout(() => heart.remove(), 9000);
 }
 

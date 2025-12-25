@@ -1,3 +1,7 @@
+/* -------------------
+   LOVE LETTER (MIDNIGHT + PASSWORD REROLL)
+------------------- */
+
 const LETTER_PASSWORD = "0976";
 const LETTER_KEY = "loveLetterIndex";
 const LETTER_DATE_KEY = "loveLetterDate";
@@ -10,7 +14,11 @@ function getTodayString() {
 fetch("love letter.txt")
   .then(res => res.text())
   .then(text => {
-    const letters = text.split(";").map(l => l.trim()).filter(Boolean);
+    const letters = text
+      .split(";")            // semicolon-separated
+      .map(l => l.trim())
+      .filter(Boolean);
+
     if (!letters.length) return;
 
     const textEl = document.getElementById("loveLetterText");
@@ -21,6 +29,7 @@ fetch("love letter.txt")
     let savedDate = localStorage.getItem(LETTER_DATE_KEY);
     let index = localStorage.getItem(LETTER_KEY);
 
+    // New day → new love letter
     if (savedDate !== today || index === null) {
       index = Math.floor(Math.random() * letters.length);
       localStorage.setItem(LETTER_KEY, index);
@@ -29,17 +38,21 @@ fetch("love letter.txt")
 
     textEl.innerText = letters[index];
 
+    // Password-protected reroll
     block.addEventListener("click", () => {
       const pass = prompt("💌 Enter password to change today’s love letter:");
       if (pass !== LETTER_PASSWORD) return;
 
       let newIndex;
-      do newIndex = Math.floor(Math.random() * letters.length);
-      while (newIndex == index && letters.length > 1);
+      do {
+        newIndex = Math.floor(Math.random() * letters.length);
+      } while (newIndex == index && letters.length > 1);
 
       index = newIndex;
       localStorage.setItem(LETTER_KEY, index);
       textEl.innerText = letters[index];
     });
   })
-  .catch(err => console.error("Love letter failed to load:", err));
+  .catch(err => {
+    console.error("Love letter failed to load:", err);
+  });

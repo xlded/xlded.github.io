@@ -1,124 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lakida 💗</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lakida</title>
 
-  <!-- Stylesheet (index.html is inside /lakida/) -->
-  <link rel="stylesheet" href="css/style.css?v=1">
+  <!-- Split CSS (order matters for overrides) -->
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/overlays.css" />
+  <link rel="stylesheet" href="css/photos.css" />
 </head>
 
 <body>
-
   <main class="dashboard">
-
-    <!-- Header & Timer -->
-    <section class="block block-wide" data-function="time">
-      <h2>💗 Lakida & Alex's Lounge</h2>
-      <p id="timer">Loading…</p>
+    <!-- Top / wide block -->
+    <section class="block block-wide block-top time-block" data-function="time">
+      <h2 id="timer">Together for 0 days, 0h 0m 0s 💕</h2>
+      <p>time flies when i’m with you</p>
     </section>
 
-    <!-- Main Grid -->
+    <!-- Bottom grid -->
     <section class="blocks-grid">
-
       <!-- Seasonal -->
       <div class="block seasonal-block" id="seasonBlock">
-        <h2 id="seasonText">Loading…</h2>
+        <h3 id="seasonText">Season</h3>
+        <p>tap me</p>
       </div>
 
-      <!-- Photos -->
+      <!-- Love letter -->
+      <div class="block" id="loveLetterBlock">
+        <h3>Love Letter 💌</h3>
+        <p id="loveLetterText">loading…</p>
+      </div>
+
+      <!-- Favorites overlay opener -->
+      <div class="block" data-function="favorites">
+        <h3>Favorites ⭐</h3>
+        <p>open</p>
+      </div>
+
+      <!-- Photos overlay opener -->
       <div class="block" data-function="photos">
         <h3>Photos 📸</h3>
-        <p>Our memories together</p>
+        <p>open</p>
       </div>
-
-      <!-- Photo Overlays -->
-      <div id="photoOverlay" class="overlay hidden">
-        <div class="slide-panel">
-          <div id="photoGrid" class="masonry"></div>
-        </div>
-      </div>
-
-      <div id="photoViewer" class="photo-viewer hidden">
-        <img id="viewerImg">
-      </div>
-
-      <!-- Favorites -->
-      <div class="block" data-function="favorites">
-        <h2>Our Favorites 💕</h2>
-        <p>Places, food & memories</p>
-      </div>
-
-      <!-- Love Letter -->
-      <div class="block" data-function="love-letter" id="loveLetterBlock">
-        <h2>Love Letter 💌</h2>
-        <p id="loveLetterText">Loading…</p>
-      </div>
-
     </section>
   </main>
 
-  <!-- Favorites Overlay -->
-  <div id="favoritesOverlay" class="overlay hidden">
-    <div class="overlay-content">
-
+  <!-- Favorites overlay -->
+  <div class="overlay hidden" id="favoritesOverlay">
+    <div class="slide-panel">
       <div class="overlay-header">
-        <h2>Our Favorites 💕</h2>
-        <button id="closeOverlay">✕</button>
+        <h2>Favorites</h2>
+        <button id="closeOverlay" aria-label="Close">✕</button>
       </div>
 
       <div class="overlay-cards">
-
         <div class="overlay-card">
-          <h3>🍽 Restaurants</h3>
+          <h3>Little things</h3>
           <ul>
-            <li>Toshis Ramen</li>
-            <li>Dos Hermanos Taqueria</li>
-            <li>Dominos (she doesn't like pizza)</li>
-            <li>Panda Express</li>
-            <li>Oba Ramen</li>
+            <li>add whatever you want</li>
+            <li>these are placeholders</li>
           </ul>
         </div>
 
         <div class="overlay-card">
-          <h3>📍 Places & Activities</h3>
+          <h3>Links</h3>
           <ul>
-            <li>McGowan Creek Lookout</li>
-            <li>The Coast</li>
-            <li>Movie Theaters</li>
-            <li>Valley River Center</li>
-            <li>Onsen Hot Tub & Sauna</li>
+            <li><a href="#" onclick="return false;">placeholder</a></li>
           </ul>
         </div>
-
-        <div class="overlay-card">
-          <h3>🧋 Drinks</h3>
-          <ul>
-            <li>Horchata!</li>
-            <li>Caramel Frappuccino</li>
-            <li>Jarritos Pineapple Soda</li>
-            <li>S'mores Frappuccino</li>
-          </ul>
-        </div>
-
-        <div class="overlay-card">
-          <h3>🍰 Food</h3>
-          <ul>
-            <li>Strawberries</li>
-            <li>Flan</li>
-            <li>Cheesecake</li>
-            <li>Ferrero Rocher (Raffaello)</li>
-            <li>Watermelon</li>
-          </ul>
-        </div>
-
       </div>
     </div>
   </div>
 
-  <!-- JavaScript -->
-  <script src="js/script.js?v=1"></script>
+  <!-- Photos overlay -->
+  <div class="overlay hidden" id="photoOverlay">
+    <div class="slide-panel">
+      <div class="overlay-header">
+        <h2>Photos</h2>
+        <button aria-label="Close" onclick="document.getElementById('photoOverlay').classList.add('hidden')">✕</button>
+      </div>
 
+      <!-- Masonry grid container -->
+      <div id="photoGrid" class="masonry"></div>
+    </div>
+  </div>
+
+  <!-- Photo viewer -->
+  <div class="photo-viewer hidden" id="photoViewer">
+    <img id="viewerImg" alt="Photo" />
+  </div>
+
+  <!-- Split JS (order matters: viewer before core) -->
+  <script src="js/fallingEmojis.js"></script>
+  <script src="js/timeHearts.js"></script>
+  <script src="js/season.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/loveLetter.js"></script>
+  <script src="js/favorites.js"></script>
+  <script src="js/photosViewer.js"></script>
+  <script src="js/photosCore.js"></script>
+  <script src="js/blockClick.js"></script>
 </body>
 </html>

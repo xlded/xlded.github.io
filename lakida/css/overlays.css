@@ -1,0 +1,150 @@
+/* Overlay background (original earlier block) */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 192, 203, 0.15);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+/* Sliding panel (original earlier block) */
+.overlay-content {
+  width: 100%;
+  max-width: 900px;
+  height: 85%;
+  background: #ffe6ef;
+  border-radius: 24px 24px 0 0;
+  padding: 20px;
+  animation: slideUp 0.4s ease;
+  overflow-y: auto;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* Header */
+.overlay-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.overlay-header button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Cards */
+.overlay-cards {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.overlay-card {
+  background: white;
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 8px 20px rgba(255, 150, 180, 0.25);
+}
+
+.overlay-card h3 {
+  margin-bottom: 8px;
+}
+
+.overlay-card ul {
+  padding-left: 16px;
+}
+
+.overlay-card a {
+  text-decoration: none;
+  color: #ff5fa2;
+  font-weight: 500;
+}
+
+.overlay-card a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Overlay (later override block from your CSS) ---------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(12px);
+  background: transparent; /* FULLY CLEAR */
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+.slide-panel {
+  background: rgba(255, 255, 255, 0.12); /* soft glass */
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  width: 90%;
+  max-width: 900px;
+  height: 85%;
+
+  border-radius: 22px;
+  padding: 16px;
+  overflow-y: auto;
+
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+.photo-viewer {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(14px);
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.photo-viewer.hidden {
+  display: none;
+}
+
+.photo-viewer img {
+  max-width: 92%;
+  max-height: 92%;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  animation: zoomIn 0.25s ease;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
