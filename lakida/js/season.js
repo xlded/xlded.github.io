@@ -41,12 +41,23 @@ document.addEventListener("DOMContentLoaded", () => {
     { name: "National boyfriend day💘", path: "/nationalboyfriendday", date: new Date(year, 9, 3) }
   ];
 
-  // Build a list of next-upcoming dates (if passed, push to next year)
-  const upcoming = eventsBase.map(e => {
-    const d = new Date(e.date);
-    if (d <= new Date()) d.setFullYear(d.getFullYear() + 1);
-    return { ...e, date: d };
-  });
+function endOfDay(d) {
+  const x = new Date(d);
+  x.setHours(23, 59, 59, 999);
+  return x;
+}
+
+// Build a list of next-upcoming dates (if passed end-of-day, push to next year)
+const upcoming = eventsBase.map(e => {
+  let d = endOfDay(e.date);
+  if (d < new Date()) {
+    const next = new Date(e.date);
+    next.setFullYear(next.getFullYear() + 1);
+    d = endOfDay(next);
+  }
+  return { ...e, date: d };
+});
+
 
   // Pick the soonest upcoming
   let nextEvent = upcoming.reduce((a, b) => (b.date - new Date() < a.date - new Date() ? b : a));
