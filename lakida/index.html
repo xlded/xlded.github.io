@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lakida 💗</title>
 
-  <!-- Correct paths (because index.html is inside /lakida/) -->
+  <!-- Stylesheet (index.html is inside /lakida/) -->
   <link rel="stylesheet" href="css/style.css?v=1">
 </head>
 
@@ -13,12 +13,13 @@
 
   <main class="dashboard">
 
-    <!-- Main Header -->
+    <!-- Header & Timer -->
     <section class="block block-wide" data-function="time">
       <h2>💗 Lakida & Alex's Lounge</h2>
       <p id="timer">Loading…</p>
     </section>
 
+    <!-- Main Grid -->
     <section class="blocks-grid">
 
       <!-- Seasonal -->
@@ -32,6 +33,7 @@
         <p>Our memories together</p>
       </div>
 
+      <!-- Photo Overlays -->
       <div id="photoOverlay" class="overlay hidden">
         <div class="slide-panel">
           <div id="photoGrid" class="masonry"></div>
@@ -39,7 +41,7 @@
       </div>
 
       <div id="photoViewer" class="photo-viewer hidden">
-        <img id="viewerImg" />
+        <img id="viewerImg">
       </div>
 
       <!-- Favorites -->
@@ -60,6 +62,7 @@
   <!-- Favorites Overlay -->
   <div id="favoritesOverlay" class="overlay hidden">
     <div class="overlay-content">
+
       <div class="overlay-header">
         <h2>Our Favorites 💕</h2>
         <button id="closeOverlay">✕</button>
@@ -79,7 +82,7 @@
         </div>
 
         <div class="overlay-card">
-          <h3>📍 Places to Go & Activities</h3>
+          <h3>📍 Places & Activities</h3>
           <ul>
             <li>McGowan Creek Lookout</li>
             <li>The Coast</li>
@@ -114,7 +117,8 @@
     </div>
   </div>
 
-  <!-- JS (correct path) -->
+  <!-- JavaScript -->
   <script src="js/script.js?v=1"></script>
+
 </body>
 </html>
