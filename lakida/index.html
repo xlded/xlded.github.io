@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lakida 💗</title>
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="lakida/css/style.css?v=1">
+  <!-- Correct paths (because index.html is inside /lakida/) -->
+  <link rel="stylesheet" href="css/style.css?v=1">
 </head>
 
 <body>
 
   <main class="dashboard">
 
-    <!-- Header Block -->
+    <!-- Main Header -->
     <section class="block block-wide" data-function="time">
       <h2>💗 Lakida & Alex's Lounge</h2>
       <p id="timer">Loading…</p>
@@ -21,18 +21,17 @@
 
     <section class="blocks-grid">
 
-      <!-- Seasonal Button -->
+      <!-- Seasonal -->
       <div class="block seasonal-block" id="seasonBlock">
         <h2 id="seasonText">Loading…</h2>
       </div>
 
-      <!-- Photos Block -->
+      <!-- Photos -->
       <div class="block" data-function="photos">
         <h3>Photos 📸</h3>
         <p>Our memories together</p>
       </div>
 
-      <!-- Photo Overlay Viewer -->
       <div id="photoOverlay" class="overlay hidden">
         <div class="slide-panel">
           <div id="photoGrid" class="masonry"></div>
@@ -61,7 +60,6 @@
   <!-- Favorites Overlay -->
   <div id="favoritesOverlay" class="overlay hidden">
     <div class="overlay-content">
-
       <div class="overlay-header">
         <h2>Our Favorites 💕</h2>
         <button id="closeOverlay">✕</button>
@@ -87,7 +85,7 @@
             <li>The Coast</li>
             <li>Movie Theaters</li>
             <li>Valley River Center</li>
-            <li>Onsen Hourly Hot Tub & Sauna</li>
+            <li>Onsen Hot Tub & Sauna</li>
           </ul>
         </div>
 
@@ -116,7 +114,7 @@
     </div>
   </div>
 
-  <!-- JavaScript -->
-  <script src="lakida/js/script.js?v=1"></script>
+  <!-- JS (correct path) -->
+  <script src="js/script.js?v=1"></script>
 </body>
 </html>
