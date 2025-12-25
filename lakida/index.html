@@ -29,6 +29,7 @@
 
 <div class="block" data-function="photos">
   <h3>Photos 📸</h3>
+  <p>open</p>
 </div>
 
 <div class="block" data-function="favorites">
@@ -104,15 +105,14 @@
   <!-- Photos overlay -->
 <div class="overlay hidden" id="photoOverlay">
   <div class="slide-panel" id="photoPanel">
-      <div class="overlay-header">
-        <h2>Photos</h2>
-        <button aria-label="Close" onclick="document.getElementById('photoOverlay').classList.add('hidden')">✕</button>
-      </div>
-
-      <!-- Masonry grid container -->
-      <div id="photoGrid" class="masonry"></div>
+    <div class="overlay-header">
+      <h2>Photos</h2>
+      <button aria-label="Close" onclick="document.getElementById('photoOverlay').classList.add('hidden')">✕</button>
     </div>
+
+    <div id="photoGrid" class="masonry"></div>
   </div>
+</div>
 
   <!-- Photo viewer -->
   <div class="photo-viewer hidden" id="photoViewer">
