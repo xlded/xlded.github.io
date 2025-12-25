@@ -1,9 +1,14 @@
-(function () {
+(() => {
+  console.log("✅ photosCore.js running");
+
   let photoList = [];
   let photoIndex = 0;
   const batchSize = 20;
-
   let loadingMore = false;
+
+  function $(id) {
+    return document.getElementById(id);
+  }
 
   function shuffle(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
@@ -12,23 +17,32 @@
     }
   }
 
-  async function loadPhotos(photoGrid) {
-    const res = await fetch("photos.txt");
+  async function loadPhotos() {
+    const photoGrid = $("photoGrid");
+    if (!photoGrid) {
+      console.error("❌ #photoGrid missing");
+      return;
+    }
+
+    const res = await fetch("photos.txt", { cache: "no-store" });
     const text = await res.text();
 
     photoList = text
       .split(";")
-      .map(l => l.trim())
+      .map(s => s.trim())
       .filter(Boolean);
 
     shuffle(photoList);
     photoIndex = 0;
-
     photoGrid.innerHTML = "";
-    loadMorePhotos(photoGrid);
+
+    loadMorePhotos();
   }
 
-  function loadMorePhotos(photoGrid) {
+  function loadMorePhotos() {
+    const photoGrid = $("photoGrid");
+    if (!photoGrid) return;
+
     if (loadingMore) return;
     if (photoIndex >= photoList.length) return;
 
@@ -41,12 +55,11 @@
       img.loading = "lazy";
       img.src = src;
 
-      // click-to-zoom (photosViewer.js defines openViewer)
       img.addEventListener("click", () => {
         if (typeof openViewer === "function") {
           openViewer(src);
         } else {
-          console.error("openViewer() not found — make sure photosViewer.js loads before photosCore.js");
+          console.error("❌ openViewer() missing — check photosViewer.js is loaded BEFORE photosCore.js");
         }
       });
 
@@ -56,45 +69,48 @@
     loadingMore = false;
   }
 
-  function init() {
-    const photosBlock = document.querySelector('[data-function="photos"]');
-    const photoOverlay = document.getElementById("photoOverlay");
-    const photoPanel = document.getElementById("photoPanel");
-    const photoGrid = document.getElementById("photoGrid");
+  function openOverlay() {
+    const overlay = $("photoOverlay");
+    const panel = $("photoPanel");
 
-    // Helpful console messages if something is missing
-    if (!photosBlock) console.error("Photos block not found: [data-function='photos']");
-    if (!photoOverlay) console.error("Photo overlay not found: #photoOverlay");
-    if (!photoPanel) console.error("Photo panel not found: #photoPanel (did you add id='photoPanel'?)");
-    if (!photoGrid) console.error("Photo grid not found: #photoGrid");
+    if (!overlay) return console.error("❌ #photoOverlay missing");
+    if (!panel) return console.error("❌ #photoPanel missing (add id='photoPanel' to the slide-panel)");
 
-    if (!photosBlock || !photoOverlay || !photoPanel || !photoGrid) return;
+    overlay.classList.remove("hidden");
+    panel.scrollTop = 0;
 
-    photosBlock.addEventListener("click", async () => {
-      photoOverlay.classList.remove("hidden");
-      photoPanel.scrollTop = 0;
-      await loadPhotos(photoGrid);
-    });
-
-    // infinite scroll on the scroll container
-    photoPanel.addEventListener("scroll", () => {
-      const nearBottom =
-        photoPanel.scrollTop + photoPanel.clientHeight >= photoPanel.scrollHeight - 300;
-
-      if (nearBottom) loadMorePhotos(photoGrid);
-    });
-
-    // click outside panel closes overlay
-    photoOverlay.addEventListener("click", (e) => {
-      if (e.target === photoOverlay) {
-        photoOverlay.classList.add("hidden");
-      }
-    });
+    console.log("📸 opened photo overlay");
+    loadPhotos();
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-  } else {
-    init();
-  }
+  // ✅ Event delegation: works regardless of layout / reordering
+  document.addEventListener("click", (e) => {
+    const photosBtn = e.target.closest('[data-function="photos"]');
+    if (photosBtn) {
+      openOverlay();
+    }
+  });
+
+  // ✅ Scroll loading on the actual scroll container
+  document.addEventListener("scroll", () => {
+    const panel = $("photoPanel");
+    if (!panel || $("photoOverlay")?.classList.contains("hidden")) return;
+
+    const nearBottom =
+      panel.scrollTop + panel.clientHeight >= panel.scrollHeight - 300;
+
+    if (nearBottom) loadMorePhotos();
+  }, true);
+
+  // ✅ Click outside panel to close
+  document.addEventListener("click", (e) => {
+    const overlay = $("photoOverlay");
+    const panel = $("photoPanel");
+    if (!overlay || !panel) return;
+
+    if (!overlay.classList.contains("hidden") && e.target === overlay) {
+      overlay.classList.add("hidden");
+      console.log("❎ closed photo overlay");
+    }
+  });
 })();
