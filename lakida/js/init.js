@@ -1,0 +1,10 @@
+import "./fallingEmojis.js";
+import "./sparkleHearts.js";
+import "./season.js";
+import "./timer.js";
+import "./loveLetter.js";
+import "./favorites.js";
+import "./photosCore.js";
+import "./photosLoad.js";
+import "./photosEvents.js";
+import "./blockClick.js";
