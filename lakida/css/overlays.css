@@ -148,3 +148,12 @@
     opacity: 1;
   }
 }
+
+#photoOverlay {
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
