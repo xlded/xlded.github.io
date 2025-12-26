@@ -1,118 +1,162 @@
 // ---------------------------
 // CONFIG
 // ---------------------------
-const letterFile = "letter.txt"; // your love letter file
+const letterFile = "letter.txt";
 const christmasBtn = document.getElementById("christmasBtn");
 const christmasResult = document.getElementById("christmasResult");
 const typewriterDiv = document.getElementById("typewriter");
-const treeDiv = document.createElement("div"); // optional for syncing tree
+
+let countdownInterval = null;
+let resultOpen = false;
 
 // ---------------------------
-// HELPER: Typewriter effect
+// TYPEWRITER EFFECT
 // ---------------------------
-async function typeWriterEffect(callback) {
+async function typeWriterEffect(done) {
   try {
-    const res = await fetch(letterFile);
+    const res = await fetch(letterFile, { cache: "no-store" });
     let text = await res.text();
 
-    // replace line breaks with <br> so formatting is preserved
-    text = text.replace(/\n/g, "<br>");
+    // preserve line breaks
+    const chunks = text.split("\n").map(line => line.trimEnd());
 
-    let i = 0;
-    function type() {
-      if (i < text.length) {
-        // append character by character, but treat <br> as one entity
-        if (text.slice(i, i+4) === "<br>") {
-          typewriterDiv.innerHTML += "<br>";
-          i += 4;
-        } else {
-          typewriterDiv.innerHTML += text.charAt(i);
-          i++;
-        }
-        // smooth scroll effect
-        typewriterDiv.scrollIntoView({behavior: "smooth", block: "nearest"});
-        requestAnimationFrame(type);
-      } else {
-        if (callback) callback();
+    typewriterDiv.innerHTML = "";
+    let lineIndex = 0;
+    let charIndex = 0;
+
+    const scroller = typewriterDiv.parentElement; // .typewrap
+
+    function step() {
+      if (lineIndex >= chunks.length) {
+        if (done) done();
+        return;
       }
+
+      const line = chunks[lineIndex];
+
+      // write current line char-by-char
+      if (charIndex < line.length) {
+        typewriterDiv.innerHTML += line.charAt(charIndex);
+        charIndex++;
+      } else {
+        // move to next line
+        typewriterDiv.innerHTML += "<br>";
+        lineIndex++;
+        charIndex = 0;
+      }
+
+      // autoscroll within the letter box
+      if (scroller) scroller.scrollTop = scroller.scrollHeight;
+
+      requestAnimationFrame(step);
     }
-    type();
+
+    step();
   } catch (err) {
-    typewriterDiv.innerHTML = "💌 Failed to load letter.";
     console.error(err);
-    if (callback) callback();
+    typewriterDiv.textContent = "💌 Failed to load letter.";
+    if (done) done();
   }
 }
 
-
 // ---------------------------
-// CALCULATE CHRISTMAS COUNT
+// CALCULATE CHRISTMASES TOGETHER
 // ---------------------------
 function calculateChristmasCount() {
-  const start = new Date("May 24, 2025"); // relationship start
+  const start = new Date("May 24, 2025");
   const now = new Date();
   const currentYear = now.getFullYear();
 
-  // count how many Decembers have passed since May 24, 2025
   let count = 0;
   for (let year = 2025; year <= currentYear; year++) {
-    const xmas = new Date(year, 11, 25); // Dec 25
+    const xmas = new Date(year, 11, 25, 23, 59, 59, 999);
     if (xmas >= start && xmas <= now) count++;
   }
   return count;
 }
 
 // ---------------------------
-// NEXT CHRISTMAS COUNTDOWN
+// NEXT CHRISTMAS COUNTDOWN (or "days since")
 // ---------------------------
-function getNextChristmasCountdown() {
+function getChristmasInfo() {
   const now = new Date();
-  let nextXmas = new Date(now.getFullYear(), 11, 25); // Dec 25 current year
-  if (now > nextXmas) {
-    nextXmas = new Date(now.getFullYear() + 1, 11, 25);
+  const thisXmasStart = new Date(now.getFullYear(), 11, 25, 0, 0, 0, 0);
+  const thisXmasEnd = new Date(now.getFullYear(), 11, 25, 23, 59, 59, 999);
+
+  // Before Christmas day
+  if (now < thisXmasStart) {
+    const diff = thisXmasStart - now;
+    return { mode: "until", label: formatCountdown(diff) };
   }
 
-  const diff = nextXmas - now;
-  const days = Math.floor(diff / (1000*60*60*24));
-  const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-  const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
-  const seconds = Math.floor((diff % (1000*60)) / 1000);
+  // During Christmas day
+  if (now >= thisXmasStart && now <= thisXmasEnd) {
+    return { mode: "today", label: "Merry Christmas 🎄" };
+  }
 
+  // After Christmas day
+  const diffMs = now - thisXmasStart;
+  const daysSince = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  return { mode: "since", label: `${daysSince} day${daysSince === 1 ? "" : "s"} since Christmas 🎄` };
+}
+
+function formatCountdown(ms) {
+  if (ms < 0) ms = 0;
+  const totalSeconds = Math.floor(ms / 1000);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
   return `${days}d ${hours}h ${minutes}m ${seconds}s`;
 }
 
+function renderResult() {
+  const info = getChristmasInfo();
+  const togetherCount = calculateChristmasCount();
+
+  let firstLine = "";
+  if (info.mode === "until") firstLine = `🎄 Next Christmas: <span id="xmasCountdown">${info.label}</span>`;
+  if (info.mode === "today") firstLine = `🎄 <span id="xmasCountdown">${info.label}</span>`;
+  if (info.mode === "since") firstLine = `🎄 <span id="xmasCountdown">${info.label}</span>`;
+
+  christmasResult.innerHTML = `
+    ${firstLine}<br>
+    💖 Christmases spent together: ${togetherCount}
+  `;
+}
+
 // ---------------------------
-// BUTTON CLICK HANDLER
+// BUTTON (toggle + single interval)
 // ---------------------------
 christmasBtn.addEventListener("click", () => {
-  // Fade in countdown and Christmas count
-  christmasResult.style.opacity = 1;
-  christmasResult.innerHTML = `
-    🎄 Next Christmas: <span id="xmasCountdown">${getNextChristmasCountdown()}</span><br>
-    💖 Christmases spent together: ${calculateChristmasCount()}
-  `;
+  resultOpen = !resultOpen;
+  christmasBtn.setAttribute("aria-expanded", String(resultOpen));
 
-  // Update countdown every second
-  setInterval(() => {
-    const countdownSpan = document.getElementById("xmasCountdown");
-    if (countdownSpan) countdownSpan.innerText = getNextChristmasCountdown();
-  }, 1000);
+  if (!resultOpen) {
+    christmasResult.classList.remove("show");
+    if (countdownInterval) {
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+    }
+    return;
+  }
+
+  christmasResult.classList.add("show");
+  renderResult();
+
+  if (!countdownInterval) {
+    countdownInterval = setInterval(() => {
+      const span = document.getElementById("xmasCountdown");
+      if (!span) return;
+      span.textContent = getChristmasInfo().label;
+    }, 1000);
+  }
 });
 
 // ---------------------------
-// TYPEWRITER + SHOW BUTTON
+// START: Typewriter then reveal button
 // ---------------------------
 typeWriterEffect(() => {
-  // show the button after typing
-  christmasBtn.style.opacity = 1;
-  christmasBtn.style.transition = "opacity 1s ease, transform 0.25s ease";
+  christmasBtn.style.opacity = "1";
+  christmasBtn.style.transform = "translateY(0)";
 });
-
-// ---------------------------
-// OPTIONAL: smooth tree scroll synced with typing
-// ---------------------------
-// Assuming you have a div#tree or treeDiv on the right
-// We can increment its transform based on scroll or typewriter index
-// For simplicity, attach it to main if needed
-// const mainDiv = document.querySelector(".main");
-// mainDiv.appendChild(treeDiv);

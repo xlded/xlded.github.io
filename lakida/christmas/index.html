@@ -1,23 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Christmas With You</title>
-  <link rel="stylesheet" href="style.css">
+
+  <!-- Preload backgrounds for less “pop-in” -->
+  <link rel="preload" as="image" href="background.jpg">
+  <link rel="preload" as="image" href="background-mobile.jpg" media="(max-width: 768px)">
+
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
+  <main class="page" aria-label="Christmas page">
+    <section class="glass letter-card" aria-label="Christmas letter">
+      <div class="typewrap">
+        <div id="typewriter" aria-live="polite"></div>
+      </div>
 
-  <div class="scene" id="scene">
-    <div class="letter">
-<div id="typewriter"></div>
+      <div class="actions">
+        <button id="christmasBtn" type="button" aria-expanded="false">
+          🎄 Our Christmases
+        </button>
 
-<button id="christmasBtn">🎄 Our Christmases</button>
-
-<div id="christmasResult"></div>
-
-    </div>
-  </div>
+        <div id="christmasResult" class="result" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
 
   <script src="script.js"></script>
 </body>
