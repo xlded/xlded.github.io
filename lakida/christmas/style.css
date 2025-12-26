@@ -232,3 +232,34 @@ body::after {
 .ghost-btn:active {
   transform: translateY(0) scale(0.99);
 }
+/* --------------------
+   DESKTOP: collapse the whole left column + slide actions left
+-------------------- */
+@media (min-width: 861px) {
+  /* Make actions slide smoothly */
+  .actions {
+    transition: transform 700ms cubic-bezier(.2,.9,.2,1);
+  }
+
+  /* When collapsed, remove the left column and let actions take over */
+  .letter-card.letter-collapsed {
+    grid-template-columns: 0fr 1fr;
+  }
+
+  /* Ensure letter area truly disappears and doesn't eat space */
+  .letter-card.letter-collapsed #letterWrap {
+    max-height: 0 !important;
+    opacity: 0;
+    overflow: hidden;
+    padding-right: 0;
+    pointer-events: none;
+  }
+
+  /* Actions shift left into the freed space */
+  .letter-card.letter-collapsed .actions {
+    grid-column: 1 / -1;
+    justify-self: start;
+    width: min(420px, 94vw);
+    transform: translateX(-18px);
+  }
+}

@@ -34,6 +34,10 @@ function setLetterCollapsed(collapsed) {
 
   if (!letterWrap || !toggleLetterBtn) return;
 
+  // NEW: Toggle a class on the whole card so desktop can collapse the left column too
+  const card = letterWrap.closest(".letter-card");
+  if (card) card.classList.toggle("letter-collapsed", collapsed);
+
   if (collapsed) {
     letterWrap.classList.add("collapsed");
     toggleLetterBtn.textContent = "Show letter ✨";
@@ -103,7 +107,6 @@ async function typeWriterEffect(onDone) {
     const res = await fetch(LETTER_FILE, { cache: "no-store" });
     const text = await res.text();
 
-    // Keep line breaks
     const lines = text.split("\n");
 
     typewriterDiv.innerHTML = "";
@@ -112,9 +115,8 @@ async function typeWriterEffect(onDone) {
     let lineIndex = 0;
     let charIndex = 0;
 
-    // Slight natural pacing
-    const baseDelay = 12;      // overall speed
-    const punctuationDelay = 70; // little pauses after punctuation
+    const baseDelay = 12;
+    const punctuationDelay = 70;
 
     function nextDelay(ch) {
       if (ch === "." || ch === "!" || ch === "?") return punctuationDelay;
@@ -140,7 +142,6 @@ async function typeWriterEffect(onDone) {
         return;
       }
 
-      // end of line
       typewriterDiv.innerHTML += "<br>";
       lineIndex++;
       charIndex = 0;
@@ -183,7 +184,6 @@ if (christmasBtn) {
     christmasResult.classList.add("show");
     renderResult();
 
-    // Start ONE interval only
     if (!countdownInterval) {
       countdownInterval = setInterval(() => {
         const xmasLine = document.getElementById("xmasLine");
@@ -198,17 +198,13 @@ if (christmasBtn) {
 // START
 // ---------------------------
 typeWriterEffect(() => {
-  // Reveal the hide/show button smoothly
   if (toggleLetterBtn) {
     toggleLetterBtn.hidden = false;
     requestAnimationFrame(() => toggleLetterBtn.classList.add("show"));
   }
 
-  // Default state: letter visible
   setLetterCollapsed(false);
 
-  // If you want the Christmas button to appear only after typing:
-  // (If your CSS already fades it in, this is a nice nudge.)
   if (christmasBtn) {
     christmasBtn.style.opacity = "1";
     christmasBtn.style.transform = "translateY(0)";
