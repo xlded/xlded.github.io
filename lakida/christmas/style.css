@@ -181,3 +181,54 @@ body::after {
   .page { padding: 16px; }
   .letter-card { padding: 16px; }
 }
+/* --------------------
+   LETTER COLLAPSE (smooth + smexy)
+-------------------- */
+
+.typewrap {
+  max-height: 62vh;
+  overflow: auto;
+  padding-right: 8px;
+
+  /* NEW: smooth collapse animation */
+  transition: max-height 700ms cubic-bezier(.2,.9,.2,1), opacity 450ms ease;
+  opacity: 1;
+}
+
+.typewrap.collapsed {
+  max-height: 0 !important;
+  opacity: 0;
+  overflow: hidden;
+  padding-right: 0;
+}
+
+/* A cute “glass ghost” button */
+.ghost-btn {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  color: white;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 16px;
+  backdrop-filter: blur(14px);
+  cursor: pointer;
+
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.6s ease, transform 0.35s ease, background 0.2s ease;
+}
+
+.ghost-btn.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ghost-btn:hover {
+  background: rgba(255,255,255,0.18);
+  transform: translateY(0) scale(1.02);
+}
+
+.ghost-btn:active {
+  transform: translateY(0) scale(0.99);
+}

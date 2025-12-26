@@ -1,103 +1,46 @@
+// /christmas/script.js (or wherever this page lives)
+
+// ---------------------------
+// DOM
+// ---------------------------
+const typewriterDiv = document.getElementById("typewriter");
+const letterWrap = document.getElementById("letterWrap");
+
+const toggleLetterBtn = document.getElementById("toggleLetterBtn");
+
+const christmasBtn = document.getElementById("christmasBtn");
+const christmasResult = document.getElementById("christmasResult");
+
 // ---------------------------
 // CONFIG
 // ---------------------------
-const letterFile = "letter.txt";
-const christmasBtn = document.getElementById("christmasBtn");
-const christmasResult = document.getElementById("christmasResult");
-const typewriterDiv = document.getElementById("typewriter");
+const LETTER_FILE = "letter.txt";
 
-let countdownInterval = null;
+// Start date (for "Christmases spent together")
+const START_DATE = new Date("May 24, 2025 00:00:00");
+
+// ---------------------------
+// STATE
+// ---------------------------
+let letterCollapsed = false;
 let resultOpen = false;
+let countdownInterval = null;
 
 // ---------------------------
-// TYPEWRITER EFFECT
+// HELPERS
 // ---------------------------
-async function typeWriterEffect(done) {
-  try {
-    const res = await fetch(letterFile, { cache: "no-store" });
-    let text = await res.text();
+function setLetterCollapsed(collapsed) {
+  letterCollapsed = collapsed;
 
-    // preserve line breaks
-    const chunks = text.split("\n").map(line => line.trimEnd());
+  if (!letterWrap || !toggleLetterBtn) return;
 
-    typewriterDiv.innerHTML = "";
-    let lineIndex = 0;
-    let charIndex = 0;
-
-    const scroller = typewriterDiv.parentElement; // .typewrap
-
-    function step() {
-      if (lineIndex >= chunks.length) {
-        if (done) done();
-        return;
-      }
-
-      const line = chunks[lineIndex];
-
-      // write current line char-by-char
-      if (charIndex < line.length) {
-        typewriterDiv.innerHTML += line.charAt(charIndex);
-        charIndex++;
-      } else {
-        // move to next line
-        typewriterDiv.innerHTML += "<br>";
-        lineIndex++;
-        charIndex = 0;
-      }
-
-      // autoscroll within the letter box
-      if (scroller) scroller.scrollTop = scroller.scrollHeight;
-
-      requestAnimationFrame(step);
-    }
-
-    step();
-  } catch (err) {
-    console.error(err);
-    typewriterDiv.textContent = "💌 Failed to load letter.";
-    if (done) done();
+  if (collapsed) {
+    letterWrap.classList.add("collapsed");
+    toggleLetterBtn.textContent = "Show letter ✨";
+  } else {
+    letterWrap.classList.remove("collapsed");
+    toggleLetterBtn.textContent = "Hide letter ✨";
   }
-}
-
-// ---------------------------
-// CALCULATE CHRISTMASES TOGETHER
-// ---------------------------
-function calculateChristmasCount() {
-  const start = new Date("May 24, 2025");
-  const now = new Date();
-  const currentYear = now.getFullYear();
-
-  let count = 0;
-  for (let year = 2025; year <= currentYear; year++) {
-    const xmas = new Date(year, 11, 25, 23, 59, 59, 999);
-    if (xmas >= start && xmas <= now) count++;
-  }
-  return count;
-}
-
-// ---------------------------
-// NEXT CHRISTMAS COUNTDOWN (or "days since")
-// ---------------------------
-function getChristmasInfo() {
-  const now = new Date();
-  const thisXmasStart = new Date(now.getFullYear(), 11, 25, 0, 0, 0, 0);
-  const thisXmasEnd = new Date(now.getFullYear(), 11, 25, 23, 59, 59, 999);
-
-  // Before Christmas day
-  if (now < thisXmasStart) {
-    const diff = thisXmasStart - now;
-    return { mode: "until", label: formatCountdown(diff) };
-  }
-
-  // During Christmas day
-  if (now >= thisXmasStart && now <= thisXmasEnd) {
-    return { mode: "today", label: "Merry Christmas 🎄" };
-  }
-
-  // After Christmas day
-  const diffMs = now - thisXmasStart;
-  const daysSince = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-  return { mode: "since", label: `${daysSince} day${daysSince === 1 ? "" : "s"} since Christmas 🎄` };
 }
 
 function formatCountdown(ms) {
@@ -110,53 +53,164 @@ function formatCountdown(ms) {
   return `${days}d ${hours}h ${minutes}m ${seconds}s`;
 }
 
+function getChristmasInfo() {
+  const now = new Date();
+  const year = now.getFullYear();
+
+  const xmasStart = new Date(year, 11, 25, 0, 0, 0, 0);
+  const xmasEnd = new Date(year, 11, 25, 23, 59, 59, 999);
+
+  if (now < xmasStart) {
+    return { mode: "until", text: `${formatCountdown(xmasStart - now)} until Christmas🎄` };
+  }
+
+  if (now >= xmasStart && now <= xmasEnd) {
+    return { mode: "today", text: `Merry Christmas 🎄` };
+  }
+
+  const daysSince = Math.floor((now - xmasStart) / (1000 * 60 * 60 * 24));
+  return { mode: "since", text: `${daysSince} day${daysSince === 1 ? "" : "s"} since Christmas 🎄` };
+}
+
+function calculateChristmasCount() {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  let count = 0;
+
+  for (let year = START_DATE.getFullYear(); year <= currentYear; year++) {
+    const xmasEnd = new Date(year, 11, 25, 23, 59, 59, 999);
+    if (xmasEnd >= START_DATE && xmasEnd <= now) count++;
+  }
+  return count;
+}
+
 function renderResult() {
   const info = getChristmasInfo();
   const togetherCount = calculateChristmasCount();
 
-  let firstLine = "";
-  if (info.mode === "until") firstLine = `🎄 Next Christmas: <span id="xmasCountdown">${info.label}</span>`;
-  if (info.mode === "today") firstLine = `🎄 <span id="xmasCountdown">${info.label}</span>`;
-  if (info.mode === "since") firstLine = `🎄 <span id="xmasCountdown">${info.label}</span>`;
-
   christmasResult.innerHTML = `
-    ${firstLine}<br>
-    💖 Christmases spent together: ${togetherCount}
+    <div id="xmasLine">${info.text}</div>
+    <div style="margin-top:8px;">💖 Christmases spent together: ${togetherCount}</div>
   `;
 }
 
 // ---------------------------
-// BUTTON (toggle + single interval)
+// TYPEWRITER
+// (smooth + autoscroll inside the letter box)
 // ---------------------------
-christmasBtn.addEventListener("click", () => {
-  resultOpen = !resultOpen;
-  christmasBtn.setAttribute("aria-expanded", String(resultOpen));
+async function typeWriterEffect(onDone) {
+  try {
+    const res = await fetch(LETTER_FILE, { cache: "no-store" });
+    const text = await res.text();
 
-  if (!resultOpen) {
-    christmasResult.classList.remove("show");
-    if (countdownInterval) {
-      clearInterval(countdownInterval);
-      countdownInterval = null;
+    // Keep line breaks
+    const lines = text.split("\n");
+
+    typewriterDiv.innerHTML = "";
+    const scroller = letterWrap;
+
+    let lineIndex = 0;
+    let charIndex = 0;
+
+    // Slight natural pacing
+    const baseDelay = 12;      // overall speed
+    const punctuationDelay = 70; // little pauses after punctuation
+
+    function nextDelay(ch) {
+      if (ch === "." || ch === "!" || ch === "?") return punctuationDelay;
+      if (ch === "," || ch === ";" || ch === ":") return punctuationDelay * 0.55;
+      return baseDelay;
     }
-    return;
-  }
 
-  christmasResult.classList.add("show");
-  renderResult();
+    function step() {
+      if (lineIndex >= lines.length) {
+        if (typeof onDone === "function") onDone();
+        return;
+      }
 
-  if (!countdownInterval) {
-    countdownInterval = setInterval(() => {
-      const span = document.getElementById("xmasCountdown");
-      if (!span) return;
-      span.textContent = getChristmasInfo().label;
-    }, 1000);
+      const line = lines[lineIndex];
+
+      if (charIndex < line.length) {
+        const ch = line.charAt(charIndex);
+        typewriterDiv.innerHTML += ch;
+        charIndex++;
+
+        if (scroller) scroller.scrollTop = scroller.scrollHeight;
+        setTimeout(step, nextDelay(ch));
+        return;
+      }
+
+      // end of line
+      typewriterDiv.innerHTML += "<br>";
+      lineIndex++;
+      charIndex = 0;
+
+      if (scroller) scroller.scrollTop = scroller.scrollHeight;
+      setTimeout(step, 35);
+    }
+
+    step();
+  } catch (e) {
+    console.error(e);
+    typewriterDiv.textContent = "💌 Failed to load the letter.";
+    if (typeof onDone === "function") onDone();
   }
-});
+}
 
 // ---------------------------
-// START: Typewriter then reveal button
+// EVENTS
+// ---------------------------
+if (toggleLetterBtn) {
+  toggleLetterBtn.addEventListener("click", () => {
+    setLetterCollapsed(!letterCollapsed);
+  });
+}
+
+if (christmasBtn) {
+  christmasBtn.addEventListener("click", () => {
+    resultOpen = !resultOpen;
+    christmasBtn.setAttribute("aria-expanded", String(resultOpen));
+
+    if (!resultOpen) {
+      christmasResult.classList.remove("show");
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+      }
+      return;
+    }
+
+    christmasResult.classList.add("show");
+    renderResult();
+
+    // Start ONE interval only
+    if (!countdownInterval) {
+      countdownInterval = setInterval(() => {
+        const xmasLine = document.getElementById("xmasLine");
+        if (!xmasLine) return;
+        xmasLine.textContent = getChristmasInfo().text;
+      }, 1000);
+    }
+  });
+}
+
+// ---------------------------
+// START
 // ---------------------------
 typeWriterEffect(() => {
-  christmasBtn.style.opacity = "1";
-  christmasBtn.style.transform = "translateY(0)";
+  // Reveal the hide/show button smoothly
+  if (toggleLetterBtn) {
+    toggleLetterBtn.hidden = false;
+    requestAnimationFrame(() => toggleLetterBtn.classList.add("show"));
+  }
+
+  // Default state: letter visible
+  setLetterCollapsed(false);
+
+  // If you want the Christmas button to appear only after typing:
+  // (If your CSS already fades it in, this is a nice nudge.)
+  if (christmasBtn) {
+    christmasBtn.style.opacity = "1";
+    christmasBtn.style.transform = "translateY(0)";
+  }
 });

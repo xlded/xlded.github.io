@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Christmas With You</title>
 
-  <!-- Preload backgrounds for less “pop-in” -->
+  <!-- Optional: preloads help images pop in less -->
   <link rel="preload" as="image" href="background.jpg">
   <link rel="preload" as="image" href="background-mobile.jpg" media="(max-width: 768px)">
 
@@ -15,17 +15,26 @@
 <body>
   <main class="page" aria-label="Christmas page">
     <section class="glass letter-card" aria-label="Christmas letter">
-      <div class="typewrap">
+
+      <!-- Collapsible letter area -->
+      <div class="typewrap" id="letterWrap">
         <div id="typewriter" aria-live="polite"></div>
       </div>
 
+      <!-- Buttons area (always visible) -->
       <div class="actions">
+        <!-- Appears after typing finishes -->
+        <button id="toggleLetterBtn" type="button" class="ghost-btn" hidden>
+          Hide letter ✨
+        </button>
+
         <button id="christmasBtn" type="button" aria-expanded="false">
           🎄 Our Christmases
         </button>
 
         <div id="christmasResult" class="result" aria-live="polite"></div>
       </div>
+
     </section>
   </main>
 
