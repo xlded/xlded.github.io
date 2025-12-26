@@ -232,21 +232,28 @@ body::after {
 .ghost-btn:active {
   transform: translateY(0) scale(0.99);
 }
-/* --------------------
-   DESKTOP: collapse the whole left column + slide actions left
--------------------- */
 @media (min-width: 861px) {
+  /* Make the whole card animate smoothly */
+  .letter-card {
+    transition:
+      width 700ms cubic-bezier(.2,.9,.2,1),
+      padding 700ms cubic-bezier(.2,.9,.2,1),
+      grid-template-columns 700ms cubic-bezier(.2,.9,.2,1);
+  }
+
   /* Make actions slide smoothly */
   .actions {
     transition: transform 700ms cubic-bezier(.2,.9,.2,1);
   }
 
-  /* When collapsed, remove the left column and let actions take over */
+  /* COLLAPSED: shrink the glass card itself */
   .letter-card.letter-collapsed {
     grid-template-columns: 0fr 1fr;
+    width: min(460px, 94vw);   /* <-- shrink the box */
+    padding: 18px;             /* optional: a bit tighter */
   }
 
-  /* Ensure letter area truly disappears and doesn't eat space */
+  /* Ensure the letter area truly disappears */
   .letter-card.letter-collapsed #letterWrap {
     max-height: 0 !important;
     opacity: 0;
@@ -255,11 +262,11 @@ body::after {
     pointer-events: none;
   }
 
-  /* Actions shift left into the freed space */
+  /* Actions take over and tuck left nicely */
   .letter-card.letter-collapsed .actions {
     grid-column: 1 / -1;
     justify-self: start;
-    width: min(420px, 94vw);
-    transform: translateX(-18px);
+    width: 100%;
+    transform: translateX(0);  /* no teleport offsets needed now */
   }
 }
