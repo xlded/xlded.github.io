@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lakida</title>
 
-  <!-- Split CSS (order matters for overrides) -->
+  <!-- Split CSS -->
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/animations.css" />
@@ -18,29 +18,34 @@
     <!-- Top / wide block -->
     <section class="block block-wide block-top time-block" data-function="time">
       <h2 id="timer">Together for 0 days, 0h 0m 0s 💕</h2>
+      <p>time flies when i’m with you</p>
     </section>
 
     <!-- Bottom grid -->
     <section class="blocks-grid">
-<div class="block seasonal-block" id="seasonBlock">
-  <h3 id="seasonText">Season</h3>
-  <p id="seasonCountdown"></p>
-</div>
+      <!-- Seasonal (top-left) -->
+      <div class="block seasonal-block" id="seasonBlock">
+        <h3 id="seasonText">Season</h3>
+        <p id="seasonCountdown"></p>
+      </div>
 
-<div class="block" data-function="photos">
-  <h3>Photos 📸</h3>
-  <p>open</p>
-</div>
+      <!-- Photos (top-right) -->
+      <div class="block" data-function="photos">
+        <h3>Photos 📸</h3>
+        <p>open</p>
+      </div>
 
-<div class="block" data-function="favorites">
-  <h3>Favorites ⭐</h3>
-</div>
+      <!-- Favorites (bottom-left) -->
+      <div class="block" data-function="favorites">
+        <h3>Favorites ⭐</h3>
+        <p>open</p>
+      </div>
 
-<div class="block" id="loveLetterBlock">
-  <h3>Love Letter 💌</h3>
-  <p id="loveLetterText">loading…</p>
-</div>
-
+      <!-- Love Letter (bottom-right) -->
+      <div class="block" id="loveLetterBlock">
+        <h3>Love Letter 💌</h3>
+        <p id="loveLetterText">loading…</p>
+      </div>
     </section>
   </main>
 
@@ -60,66 +65,67 @@
             <li>Ramen</li>
           </ul>
         </div>
-		
-      <div class="overlay-cards">
+
         <div class="overlay-card">
           <h3>Favorite Sweets</h3>
           <ul>
-		  <li>Ferrero Rocher (specifically Raffaello)</li>
+            <li>Ferrero Rocher (specifically Raffaello)</li>
             <li>Cheese Cake</li>
             <li>Flan</li>
           </ul>
         </div>
-		
-		      <div class="overlay-cards">
+
         <div class="overlay-card">
           <h3>Favorite Drinks</h3>
           <ul>
             <li>Pineapple Jarritos</li>
-            <li>Horchatta!</li>
+            <li>Horchata!</li>
           </ul>
         </div>
 
-		        <div class="overlay-card">
+        <div class="overlay-card">
           <h3>POI'S / Places to go!</h3>
-		  <li>
-		  <a href="https://maps.app.goo.gl/7HjUpjw9msCmET25A" target="_blank" rel="noopener">
-		  McGowan Creek Lookout
-		  </a>
-		  </li>
+          <ul>
+            <li>
+              <a href="https://maps.app.goo.gl/7HjUpjw9msCmET25A" target="_blank" rel="noopener">
+                McGowan Creek Lookout
+              </a>
+            </li>
+          </ul>
         </div>
-		
-		        <div class="overlay-card">
+
+        <div class="overlay-card">
           <h3>Restaurants</h3>
-		  <li>
-		  <a href="https://maps.app.goo.gl/Cv2VmKa3VM6zSk7i6" target="_blank" rel="noopener">
-		  Toshi's Ramen
-		  </a>
-		  </li>
+          <ul>
+            <li>
+              <a href="https://maps.app.goo.gl/Cv2VmKa3VM6zSk7i6" target="_blank" rel="noopener">
+                Toshi's Ramen
+              </a>
+            </li>
+          </ul>
         </div>
-		
       </div>
     </div>
   </div>
 
   <!-- Photos overlay -->
-<div class="overlay hidden" id="photoOverlay">
-  <div class="slide-panel" id="photoPanel">
-    <div class="overlay-header">
-      <h2>Photos</h2>
-      <button aria-label="Close" onclick="document.getElementById('photoOverlay').classList.add('hidden')">✕</button>
+  <div class="overlay hidden" id="photoOverlay">
+    <div class="slide-panel" id="photoPanel">
+      <div class="overlay-header">
+        <h2>Photos</h2>
+        <button aria-label="Close" onclick="document.getElementById('photoOverlay').classList.add('hidden')">✕</button>
+      </div>
+
+      <div id="photoGrid" class="masonry"></div>
     </div>
-
-    <div id="photoGrid" class="masonry"></div>
   </div>
-</div>
 
-  <!-- Photo viewer -->
+  <!-- Photo viewer (click-to-zoom) -->
   <div class="photo-viewer hidden" id="photoViewer">
     <img id="viewerImg" alt="Photo" />
   </div>
 
-  <!-- Split JS (order matters: viewer before core) -->
+  <!-- Split JS (order matters) -->
   <script src="js/fallingEmojis.js"></script>
   <script src="js/timeHearts.js"></script>
   <script src="js/season.js"></script>
